@@ -1,0 +1,103 @@
+<div class="form-group row">
+  <div class="offset-sm-3 col-sm-9">
+    <button (click)="this.submit()" type="submit" nbButton status="primary">סיימתי</button>
+  </div>
+</div>
+<div class="row direction">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>פרטי רכב</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="this.form">
+          <div class="form-group row">
+            <label for="inputEmail1" class="label col-sm-3 col-form-label">מספר רכב</label>
+            <div class="col-sm-9">
+              <input type="number" nbInput fullWidth shape="semi-round" status="info" placeholder="מס' רכב"
+                formControlName="carNum">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword2" class="label col-sm-3 col-form-label">קילומטר</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="כמה קילומטר?"
+                formControlName="km">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword2" class="label col-sm-3 col-form-label">מידת צמיג</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="מידת צמיג"
+                formControlName="tireSize">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword2" class="label col-sm-3 col-form-label">קוד מהירות</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד מהירות"
+                formControlName="speedCode">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword2" class="label col-sm-3 col-form-label">קוד עומס</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד עומס"
+                formControlName="omesCode">
+            </div>
+          </div>
+          <!--
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <button type="submit" nbButton status="primary">Sign in</button>
+            </div>
+          </div> -->
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+
+<div class="row direction">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>פרטי נהג</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="this.form">
+          <div class="form-group row direction">
+            <label for="inputEmail1" class="label col-sm-3 col-form-label">שם מלא</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="שם מלא"
+                formControlName="driverName">
+            </div>
+          </div>
+          <div class="form-group row direction">
+            <label for="inputPassword2" class="label col-sm-3 col-form-label">מס' טלפון</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="מס' טלפון"
+                formControlName="driverPhone">
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+  </div>
+
+  <div class="row" style="direction: rtl;" [formGroup]="form">
+    <div *ngFor="let tire of getTires(); let i=index;" class="col-lg-12">
+      <nb-card>
+        <nb-card-header>צמיג {{i+1}}</nb-card-header>
+        <nb-card-body>
+          <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="מידת צמיג"
+            formControlName="carNum">
+          <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד מהירות"
+            formControlName="km">
+          <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד עומס"
+            formControlName="tireSize">
+          <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="יצרן"
+            formControlName="speedCode">
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+  </div>
+
+</div>
