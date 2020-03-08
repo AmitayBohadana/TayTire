@@ -14,7 +14,7 @@ namespace TemplateMongo.Model
         public string plateNum { get; set; }
 
         public string manufacture { get; set; }
-
+       
         public string model { get; set; }
 
         public int km { get; set; }

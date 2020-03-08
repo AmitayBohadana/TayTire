@@ -43,8 +43,11 @@ namespace TemplateMongo
             services.AddSingleton<IBookstoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
 
+            services.AddSingleton<ReportBLService>();
             services.AddSingleton<BookService>();
             services.AddSingleton<ReportService>();
+            services.AddSingleton<DataService>();
+            services.AddSingleton<VehicleService>();
             services.AddControllers();
            // services.AddMvc();
         }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Report } from '../../../model/report';
+import { ReportVM } from '../../../model/VM/reportVM';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { RestService } from '../../../services/rest.service';
 import { Book } from '../../../model/Book';
@@ -14,7 +14,7 @@ import { WorkEvent } from '../../../model/workEvent';
   styleUrls: ['./report-input.component.scss']
 })
 export class ReportInputComponent implements OnInit {
-  protected report:Report = new Report();
+  protected report:ReportVM = new ReportVM();
 
   protected form = new FormGroup({
     carNum: new FormControl('',Validators.maxLength(9)),
@@ -38,7 +38,7 @@ export class ReportInputComponent implements OnInit {
     this.report.vehicle = this.generateVehicle();
     this.report.workEvents = this.generateWorkEvents();
     // this.restService.post("api/Report1",this.report);
-    this.restService.get("api/Report1");
+    this.restService.post("api/Report1/GetReportByPlateNum",this.report);
     // this.restService.get2("report1");
 
     console.log("submited")
@@ -72,10 +72,8 @@ export class ReportInputComponent implements OnInit {
   generateVehicle(){
     let vehicle = new Vehicle();
     // vehicle.Id="4444";
-    vehicle.plateNum="12334444";
+    vehicle.plateNum="7999672";
     vehicle.km=15000;
-    vehicle.manufacture="mazda";
-    vehicle.model="1992";
     vehicle.tireSize = "175/65/14";
     vehicle.tires = new Array<Tire>();
     vehicle.tires.push(this.generateTire());

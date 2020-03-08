@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TemplateMongo.Model;
+using TemplateMongo.Model.VM;
 using TemplateMongo.Services;
 
 namespace TemplateMongo.Controllers
@@ -15,9 +16,13 @@ namespace TemplateMongo.Controllers
     public class Report1Controller : ControllerBase
     {
         private readonly ReportService _reportService;
-        public Report1Controller(ReportService reportService)
+        private readonly DataService _dataService;
+        private readonly ReportBLService _reportBLService;
+        public Report1Controller(ReportService reportService,DataService dataService, ReportBLService reportBLService)
         {
             _reportService = reportService;
+            _dataService= dataService;
+            _reportBLService = reportBLService;
         }
 
         [HttpGet]
@@ -40,11 +45,28 @@ namespace TemplateMongo.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Report> Create(Report report)
+        [Route("GetReportByPlateNum")]
+        public ActionResult<ReportVM> GetReportByPlateNum(ReportVM reportVm)
         {
-            _reportService.Create(report);
 
-            return CreatedAtRoute("GetBook", new { id = report.Id.ToString() }, report);
+
+            ReportVM retVal = _reportBLService.GetReportVmByPlateNum(reportVm);
+
+            if (retVal == null)
+            {
+                return NotFound();
+            }
+
+            return retVal;
+        }
+
+        [HttpPost]
+        public ActionResult<ReportVM> Create(ReportVM reportVm)
+        {
+            _reportBLService.Create(reportVm);
+
+
+            return CreatedAtRoute("GetBook", new { id = reportVm.Id.ToString() }, reportVm);
         }
 
         [HttpPut("{id:length(24)}")]

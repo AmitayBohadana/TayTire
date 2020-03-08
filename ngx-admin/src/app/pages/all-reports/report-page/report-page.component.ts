@@ -26,6 +26,10 @@ export class ReportPageComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      reportId: {
+        title: "מס' דיווח",
+        type: 'number',
+      },
       id: {
         title: "מס' רכב",
         type: 'number',
@@ -35,7 +39,7 @@ export class ReportPageComponent implements OnInit {
         type: 'string',
       },
       lastName: {
-        title: 'Last Name',
+        title: 'טלפון',
         type: 'string',
       },
       username: {
@@ -57,10 +61,16 @@ export class ReportPageComponent implements OnInit {
   constructor(private reportService:ReportService) { }
 
   ngOnInit() {
+    this.getData();
   }
 
   getData(){
-    this.reportService.requestData();
+    this.reportService.requestData(this.reportsListCB.bind(this));
+  }
+
+  reportsListCB(data){
+    console.log("data at report page: ",data);
+
   }
 
 }

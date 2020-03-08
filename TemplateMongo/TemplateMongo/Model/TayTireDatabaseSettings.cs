@@ -10,11 +10,15 @@ namespace TemplateMongo.Model
         public string TayTireCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
+        public string ReportCollectionName { get; set; }
+        public string VehicleCollectionName { get; set; }
     }
 
     public interface ITayTireDatabaseSettings
     {
         string TayTireCollectionName { get; set; }
+        string ReportCollectionName { get; set; }
+        string VehicleCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }

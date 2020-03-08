@@ -12,11 +12,11 @@ export class ReportService {
 
   constructor(private restService:RestService) {
     console.log("request data");
-    this.requestData();
+    this.requestData(this.reportsListCB.bind(this));
    }
 
-   requestData(){
-    this.restService.get("api/Report1",this.reportsListCB.bind(this),this.requestFailedCB.bind(this),this);
+   requestData(sucessCB){
+    this.restService.get("api/Report1",sucessCB,this.requestFailedCB.bind(this),this);
    }
 
    requestFailedCB(data){

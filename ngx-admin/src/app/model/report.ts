@@ -6,9 +6,9 @@ export class Report {
   public Id:string;
   public leasingCompany:string;
   public tireCompany:string;
+  public vehicle_id:string;
 
   public user:User = new User();
-  public vehicle:Vehicle = new Vehicle();
   public workEvents:Array<WorkEvent> = new Array<WorkEvent>();
 
 

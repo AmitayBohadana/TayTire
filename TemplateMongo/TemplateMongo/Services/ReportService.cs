@@ -16,7 +16,7 @@ namespace TemplateMongo.Services
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
             var dbName = settings.DatabaseName;
-            _reports = database.GetCollection<Report>(settings.TayTireCollectionName);
+            _reports = database.GetCollection<Report>(settings.ReportCollectionName);
         }
 
         public List<Report> Get() =>

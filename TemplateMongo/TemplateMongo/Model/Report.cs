@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace TemplateMongo.Model
 {
+    [BsonIgnoreExtraElements]
     public class Report
     {
         [BsonId]
@@ -19,8 +20,7 @@ namespace TemplateMongo.Model
         public string tireCompany { get; set; }
 
         public User user { get; set; }
-
-        public Vehicle vehicle { get; set; }
+        public string vehicle_id { get; set; }
         public List<WorkEvent> workEvents { get; set; }
 
  
