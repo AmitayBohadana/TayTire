@@ -25,6 +25,7 @@ namespace TemplateMongo.Services
         public Book Get(string id) =>
             _books.Find<Book>(book => book.Id == id).FirstOrDefault();
 
+
         public Book Create(Book book)
         {
             _books.InsertOne(book);

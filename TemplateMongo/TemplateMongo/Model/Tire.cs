@@ -15,6 +15,7 @@ namespace TemplateMongo.Model
 
         public string speedCode { get; set; }
         public string omesCode { get; set; }
+        public int location { get; set; }
 
     }
 }

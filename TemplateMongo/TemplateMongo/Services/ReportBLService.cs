@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,12 @@ namespace TemplateMongo.Services
 
         private readonly DataService _dataService;
         private readonly VehicleService _vehicleService;
-        public ReportBLService(ITayTireDatabaseSettings settings,DataService dataService, VehicleService vehicleService)
+        private readonly ReportService _reportService;
+        public ReportBLService(ITayTireDatabaseSettings settings,DataService dataService, VehicleService vehicleService,ReportService reportService)
         {
             _dataService = dataService;
             _vehicleService = vehicleService;
+            _reportService = reportService;
             if (settings != null)
             {
                 var client = new MongoClient(settings.ConnectionString);
@@ -27,11 +31,33 @@ namespace TemplateMongo.Services
             }          
         }
 
+        internal ActionResult<List<ReportVM>> GetAllReportVM()
+        {
+            List<ReportVM> list = null;
+            List<Report> reports = null;
+            reports = _reportService.Get();
+            if (reports != null)
+            {
+                list = new List<ReportVM>();
+                reports.ForEach(report =>
+                {
+                    //ReportVM reportVm = new ReportVM();
+                    Vehicle vehicle = _vehicleService.Get(report.vehicle_id);
+                    var serializedParent = JsonConvert.SerializeObject(report);
+                    ReportVM reportVm = JsonConvert.DeserializeObject<ReportVM>(serializedParent);
+                    //reportVm = (ReportVM)report;
+                    reportVm.vehicle = vehicle;
+                    list.Add(reportVm);
+                });
+            }
+            return list;
+        }
+
         public ReportVM Create(ReportVM reportVm)
         {
             if(reportVm != null)
             {
-                Vehicle vehicle = getVehicle(reportVm);
+                Vehicle vehicle = updateOrCreateVehicle(reportVm);
                 //reportVm.vehicle.Id = vehicle.Id;
                 Report report = reportVm;
                 report.vehicle_id = vehicle.Id;
@@ -46,14 +72,37 @@ namespace TemplateMongo.Services
             ReportVM retVal = null;
             if (reportVm != null)
             {
-                Vehicle vehicle = getVehicle(reportVm);
+                Vehicle vehicle = updateOrCreateVehicle(reportVm);
                 retVal = new ReportVM();
                 retVal.vehicle = vehicle;
             }
             return retVal;
         }
 
-        private Vehicle getVehicle(ReportVM report)
+        public ReportVM GetNewReportByPlateNum(ReportVM reportVm)
+        {
+            ReportVM retVal = new ReportVM();
+            Vehicle vehicle = GetVehicle(reportVm);
+            if (vehicle != null)
+            {
+                retVal.vehicle = vehicle;
+            }
+            else{
+                retVal.vehicle = new Vehicle();
+            }
+            return retVal;
+        }
+        public Vehicle GetVehicle(ReportVM reportVm)
+        {
+            Vehicle vehicle = null;
+            if (reportVm.vehicle != null)
+            {
+                vehicle = _vehicleService.GetByPlateNum(reportVm.vehicle.plateNum);
+            }
+            
+            return vehicle;
+        }
+        private Vehicle updateOrCreateVehicle(ReportVM report)
         {
 
             Vehicle vehicle = null;
@@ -61,10 +110,15 @@ namespace TemplateMongo.Services
             if (report.vehicle != null)
             {
                 vehicle = _vehicleService.GetByPlateNum(report.vehicle.plateNum);       
-                if(vehicle == null)
+                if(vehicle == null) //First time vehicle num appears
                 {
                     vehicle = report.vehicle;
                     _vehicleService.Create(vehicle);
+                }
+                else
+                {
+                    vehicle = updateVehicleObj(vehicle,report.vehicle);
+                    _vehicleService.Update(vehicle.Id,vehicle);
                 }
                 if (!hasVehicleManufactureData(vehicle))
                 {
@@ -73,6 +127,24 @@ namespace TemplateMongo.Services
             }
             
             return vehicle;
+        }
+
+        private Vehicle updateVehicleObj(Vehicle oldVehicle, Vehicle newVehicle)
+        {
+            Vehicle retVal= oldVehicle;
+            if(oldVehicle == null)
+            {
+                retVal = newVehicle;
+            }
+            else
+            {
+                //need to validate new vehicle
+                retVal.km = newVehicle.km;
+                retVal.tires = newVehicle.tires;
+                retVal.tireSize = newVehicle.tireSize;
+
+            }
+            return retVal;
         }
 
         private bool hasVehicleManufactureData(Vehicle vehicle)

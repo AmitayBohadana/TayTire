@@ -33,6 +33,7 @@ import {
 import { TooltipComponent } from './tooltip/tooltip.component';
 
 
+
 const COMPONENTS = [
   ModalOverlaysComponent,
   ToastrComponent,
@@ -88,7 +89,7 @@ const SERVICES = [
   ],
   entryComponents: [
     ...ENTRY_COMPONENTS,
-  ],
+  ]
 })
 export class ModalOverlaysModule {
 }

@@ -3,6 +3,7 @@ import { ReportService } from '../../../services/report.service';
 import { LocalDataSource } from 'ng2-smart-table';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
+import { ReportVM } from '../../../model/VM/reportVM';
 
 @Component({
   selector: 'ngx-report-page',
@@ -30,7 +31,7 @@ export class ReportPageComponent implements OnInit {
         title: "מס' דיווח",
         type: 'number',
       },
-      id: {
+      carNum: {
         title: "מס' רכב",
         type: 'number',
       },
@@ -38,7 +39,7 @@ export class ReportPageComponent implements OnInit {
         title: 'שם הנהג',
         type: 'string',
       },
-      lastName: {
+      phoneNum: {
         title: 'טלפון',
         type: 'string',
       },
@@ -58,7 +59,10 @@ export class ReportPageComponent implements OnInit {
   };
 
   source: LocalDataSource = new LocalDataSource();
-  constructor(private reportService:ReportService) { }
+  reports:Array<ReportVM> = new Array<ReportVM>();
+  constructor(private reportService:ReportService) {
+    this.source.load([{"carNum":"123344"},{"carNum":"123444444"}]);
+   }
 
   ngOnInit() {
     this.getData();
@@ -69,8 +73,20 @@ export class ReportPageComponent implements OnInit {
   }
 
   reportsListCB(data){
-    console.log("data at report page: ",data);
 
+    this.reports = data;
+
+    this.loadDataIntoSource();
+    // this.source.load([{"carNum":"443344"},{"carNum":"12000"}]);
   }
+  loadDataIntoSource(){
+    this.reports.forEach(r => {
 
+      let item = this.generateSmartTableItem(r);
+      this.source.load([item]);
+    });
+  }
+  generateSmartTableItem(r: ReportVM) {
+    return {"carNum":r.vehicle.plateNum,"firstName":r.user.firstName,"phoneNum":r.user.phoneNum};
+  }
 }

@@ -12,6 +12,7 @@ namespace TemplateMongo.Model
         public string DatabaseName { get; set; }
         public string ReportCollectionName { get; set; }
         public string VehicleCollectionName { get; set; }
+        public string RepairTypeCollectionName { get; set; }
     }
 
     public interface ITayTireDatabaseSettings
@@ -19,6 +20,7 @@ namespace TemplateMongo.Model
         string TayTireCollectionName { get; set; }
         string ReportCollectionName { get; set; }
         string VehicleCollectionName { get; set; }
+        string RepairTypeCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }

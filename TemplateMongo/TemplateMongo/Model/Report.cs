@@ -22,7 +22,11 @@ namespace TemplateMongo.Model
         public User user { get; set; }
         public string vehicle_id { get; set; }
         public List<WorkEvent> workEvents { get; set; }
+        public string confirmationNum { get; set; }
+        public string vehicle_plate_num { get; set; }
+        public string status { get; set; }
 
- 
+
+
     }
 }

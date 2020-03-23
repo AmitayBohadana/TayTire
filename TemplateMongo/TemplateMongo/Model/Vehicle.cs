@@ -19,7 +19,19 @@ namespace TemplateMongo.Model
 
         public int km { get; set; }
         public string tireSize { get; set; }
+        //public Dictionary<int,Tire> carTires { get; set; }
         public List<Tire> tires { get; set; }
         public int numOfTires { get; set; }
+        public Vehicle()
+        {
+            this.tires = new List<Tire>();
+            this.numOfTires = 5;
+            for (int i = 0; i < this.numOfTires; i++)
+            {
+                Tire tire = new Tire();
+                tire.location = i + 1;
+                this.tires.Add(tire);
+            }
+        }
     }
 }

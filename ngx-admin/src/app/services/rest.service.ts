@@ -34,6 +34,9 @@ export class RestService implements OnDestroy {
     return this.http.post("/" +api,dto,httpOptions).pipe(takeWhile(()=>this.alive))
     .subscribe((res)=>{
       console.log("server res: ",res);
+      if(successCB != null){
+        successCB(res);
+      }
     });
   }
 

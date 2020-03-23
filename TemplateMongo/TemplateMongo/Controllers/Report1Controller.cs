@@ -18,16 +18,22 @@ namespace TemplateMongo.Controllers
         private readonly ReportService _reportService;
         private readonly DataService _dataService;
         private readonly ReportBLService _reportBLService;
-        public Report1Controller(ReportService reportService,DataService dataService, ReportBLService reportBLService)
+        private readonly MailMsgService _mailService;
+        private readonly RepairTypeService _repairTypeService;
+        public Report1Controller(ReportService reportService,DataService dataService, ReportBLService reportBLService,
+            MailMsgService mailService,RepairTypeService repairTypesService)
         {
+            _mailService = mailService;
             _reportService = reportService;
             _dataService= dataService;
             _reportBLService = reportBLService;
+            _repairTypeService = repairTypesService;
         }
 
         [HttpGet]
-        public ActionResult<List<Report>> Get() =>
-                _reportService.Get();
+        public ActionResult<List<ReportVM>> Get() =>
+                _reportBLService.GetAllReportVM();
+        
 
 
 
@@ -48,10 +54,26 @@ namespace TemplateMongo.Controllers
         [Route("GetReportByPlateNum")]
         public ActionResult<ReportVM> GetReportByPlateNum(ReportVM reportVm)
         {
+            //RepairType rtype = new RepairType();
+            //rtype.code = 3;
+            //rtype.type = "תיקון תקר";
 
-
+            //_repairTypeService.Create(rtype);
             ReportVM retVal = _reportBLService.GetReportVmByPlateNum(reportVm);
+            //_mailService.sendMail();
+            if (retVal == null)
+            {
+                return NotFound();
+            }
 
+            return retVal;
+        }
+
+        [HttpPost]
+        [Route("GetNewReportByPlateNum")]
+        public ActionResult<ReportVM> GetNewReportByPlateNum(ReportVM reportVm)
+        {
+            ReportVM retVal = _reportBLService.GetNewReportByPlateNum(reportVm);
             if (retVal == null)
             {
                 return NotFound();

@@ -8,8 +8,11 @@ namespace TemplateMongo.Model {
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
-        [BsonElement("tireSize")]
+        [BsonElement("workDescription")]
         public string workDescription { get; set; }
+        public RepairType repairType { get; set; }
+        public int amount { get; set; }
+        public int location { get; set; }
 
     }
 }

@@ -12,10 +12,16 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbUserModule,
+  NbStepperModule,
+  NbListModule
 } from '@nebular/theme';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReportsRoutingModule } from './reports-routing.module';
+import { UdpCurrencyMaskPipe } from '../../@theme/pipes/UdpCurrencyMaskPipe';
+
+
+
 @NgModule({
   imports: [
     ReportsRoutingModule,
@@ -30,10 +36,16 @@ import { ReportsRoutingModule } from './reports-routing.module';
     NbDatepickerModule,
     NbSelectModule,
     NbIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NbStepperModule,
+    NbListModule
   ],
   declarations: [
-    ReportInputComponent
+    ReportInputComponent,
+
   ],
+
+  providers:[UdpCurrencyMaskPipe],
+  entryComponents:[]
 })
 export class ReportFormModule { }

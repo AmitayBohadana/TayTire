@@ -38,6 +38,7 @@ import { DEFAULT_THEME } from './styles/theme.default';
 import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
+import { ReportDisplayComponent } from './components/myComponents/report-display/report-display.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -60,7 +61,7 @@ const COMPONENTS = [
   TinyMCEComponent,
   OneColumnLayoutComponent,
   ThreeColumnsLayoutComponent,
-  TwoColumnsLayoutComponent,
+  TwoColumnsLayoutComponent
 ];
 const PIPES = [
   CapitalizePipe,
@@ -73,7 +74,7 @@ const PIPES = [
 @NgModule({
   imports: [CommonModule, ...NB_MODULES],
   exports: [CommonModule, ...PIPES, ...COMPONENTS],
-  declarations: [...COMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS, ...PIPES, ReportDisplayComponent],
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders {

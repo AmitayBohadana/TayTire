@@ -80,7 +80,7 @@ const routes: Routes = [{
     },
     {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'all-reports',
       pathMatch: 'full',
     },
     {

@@ -7,11 +7,12 @@ export class Report {
   public leasingCompany:string;
   public tireCompany:string;
   public vehicle_id:string;
-
-  public user:User = new User();
-  public workEvents:Array<WorkEvent> = new Array<WorkEvent>();
-
-
+  public vehicle_plate_num: string;
+  public user:User;
+  public workEvents:Array<WorkEvent>;
+  public confirmationNum:string;
+  public status:string;
   constructor() {
+
   }
 }

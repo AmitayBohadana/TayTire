@@ -48,6 +48,8 @@ namespace TemplateMongo
             services.AddSingleton<ReportService>();
             services.AddSingleton<DataService>();
             services.AddSingleton<VehicleService>();
+            services.AddSingleton<MailMsgService>();
+            services.AddSingleton<RepairTypeService>();
             services.AddControllers();
            // services.AddMvc();
         }

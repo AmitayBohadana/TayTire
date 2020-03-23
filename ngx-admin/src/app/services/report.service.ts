@@ -11,7 +11,7 @@ export class ReportService {
   protected reports:Array<Report> = [];
 
   constructor(private restService:RestService) {
-    console.log("request data");
+
     this.requestData(this.reportsListCB.bind(this));
    }
 
@@ -20,12 +20,11 @@ export class ReportService {
    }
 
    requestFailedCB(data){
-    console.log("falied CB data: ",data);
+
    }
    reportsListCB(data){
-     console.log("data: ",data);
-     console.log("this.reports: ",this.reports);
+
     this.reports = data;
-    console.log("this.reports: ",this.reports);
+
    }
 }

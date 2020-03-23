@@ -10,7 +10,6 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ReportFormModule } from './report-form/report-form.module';
 
 
-
 @NgModule({
   imports: [
     PagesRoutingModule,
