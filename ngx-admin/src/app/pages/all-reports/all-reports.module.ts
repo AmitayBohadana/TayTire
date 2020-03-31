@@ -6,6 +6,7 @@ import { NbCardModule, NbIconModule, NbInputModule, NbListModule, NbAccordionMod
 import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
+
 @NgModule({
   declarations: [ReportPageComponent],
   imports: [
@@ -18,7 +19,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     NbIconModule,
     NbInputModule,
     ThemeModule,
-    Ng2SmartTableModule,
+    Ng2SmartTableModule
   ]
 })
 export class AllReportsModule { }

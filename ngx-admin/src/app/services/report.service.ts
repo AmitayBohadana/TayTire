@@ -27,4 +27,7 @@ export class ReportService {
     this.reports = data;
 
    }
+   printReport(report){
+     console.log("ReportService - report: ",report);
+   }
 }

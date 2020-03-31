@@ -13,7 +13,8 @@ import {
   NbSelectModule,
   NbUserModule,
   NbStepperModule,
-  NbListModule
+  NbListModule,
+  NbSpinnerModule
 } from '@nebular/theme';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -38,7 +39,8 @@ import { UdpCurrencyMaskPipe } from '../../@theme/pipes/UdpCurrencyMaskPipe';
     NbIconModule,
     ReactiveFormsModule,
     NbStepperModule,
-    NbListModule
+    NbListModule,
+    NbSpinnerModule
   ],
   declarations: [
     ReportInputComponent,

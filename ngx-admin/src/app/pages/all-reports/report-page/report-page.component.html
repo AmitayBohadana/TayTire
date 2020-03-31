@@ -15,13 +15,11 @@
   <div class="accordion-container col-md-12 col-lg-6 col-xxxl-6">
     <nb-accordion>
       <nb-accordion-item #item *ngFor="let report of reports">
-        <nb-accordion-item-header>
-          {{report.vehicle.plateNum}} <button>פירוט</button>
+        <nb-accordion-item-header style ="text-align: center;">
+          {{getReportHeader(report)}} <button (click)="this.printReport(report)">פירוט</button>
         </nb-accordion-item-header>
         <nb-accordion-item-body>
-          A nebula is an interstellar cloud of dust, hydrogen, helium and other ionized gases.
-          Originally, nebula was a name for any diffuse astronomical object,
-          including galaxies beyond the Milky Way.
+          <ngx-report-view [report]=report></ngx-report-view>
         </nb-accordion-item-body>
       </nb-accordion-item>
     </nb-accordion>

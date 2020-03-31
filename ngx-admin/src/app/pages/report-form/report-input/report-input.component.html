@@ -4,7 +4,7 @@
       <nb-step [label]="labelOne">
         <ng-template #labelOne>שלב 1</ng-template>
         <h3 (click)="formDataInsert(1)">פרטי רכב</h3>
-        <form [formGroup]="this.stage1form">
+        <form  [formGroup]="this.stage1form"  [nbSpinner]="loading" nbSpinnerStatus="success" nbSpinnerSize="giant">
           <div class="form-group row">
             <label for="inputEmail1" class="label col-sm-3 col-form-label">מספר רכב</label>
             <div class="col-sm-9">
@@ -76,7 +76,7 @@
   <nb-card-body>
     <nb-stepper orientation="vertical">
       <div class="row">
-        <nb-step *ngFor="let tire of getTires(); let i=index;" [label]="labelOne">
+        <nb-step *ngFor="let tire of getTires(); let i=index;" [label]="labelOne" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
           <ng-template #labelOne></ng-template>
           <h3>צמיג {{i+1}}</h3>
           <form [formGroup]="this.stage3form">

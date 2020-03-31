@@ -27,7 +27,7 @@ export class ReportInputComponent implements OnInit {
   protected currentTire:Tire;
   protected currentRepairType:RepairType;
   protected typesDialogOpen = false;
-
+  protected loading = false;
   protected stage1form:FormGroup;
   protected stage2form:FormGroup;
   protected stage3form:FormGroup;
@@ -99,6 +99,7 @@ export class ReportInputComponent implements OnInit {
 
   GetNewReportByPlateNum(){
     this.loadVehicleData();
+    this.loading = true;
     this.restService.post("api/Report1/GetNewReportByPlateNum",this.report,this.newReportByPlateNumCB.bind(this));
   }
 
@@ -112,6 +113,7 @@ export class ReportInputComponent implements OnInit {
     this.report = reportVm;
     this.loadReportToView();
     this.setCurrentTireByLocation(1);
+    this.loading = false;
   }
   loadReportToView(){
     this.stage1form.get('tireSize').setValue(this.report.vehicle.tireSize);
@@ -193,13 +195,15 @@ export class ReportInputComponent implements OnInit {
     return events;
   }
   loadVehicleData(){
-    this.report.vehicle.plateNum = this.stage1form.get('carNum').value;
+    if(this.report.vehicle != null){
+      this.report.vehicle.plateNum = this.stage1form.get('carNum').value;
     if( this.stage1form.get('km').value != null){
       if(this.stage1form.get('km').value != ""){
         this.report.vehicle.km = this.stage1form.get('km').value;
       }
     }
     this.report.vehicle.tireSize = this.stage1form.get('tireSize').value;
+    }
     this.printReport();
   }
   loadDriverData(){

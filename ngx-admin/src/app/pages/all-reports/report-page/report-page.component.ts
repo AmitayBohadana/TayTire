@@ -89,4 +89,10 @@ export class ReportPageComponent implements OnInit {
   generateSmartTableItem(r: ReportVM) {
     return {"carNum":r.vehicle.plateNum,"firstName":r.user.firstName,"phoneNum":r.user.phoneNum};
   }
+  printReport(report){
+    this.reportService.printReport(report);
+  }
+  getReportHeader(report){
+    return report.vehicle.plateNum + " - "+report.user.firstName;
+  }
 }

@@ -12,6 +12,7 @@ import {
   NbSelectModule,
   NbIconModule,
   NbThemeModule,
+
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbSecurityModule } from '@nebular/security';
@@ -39,6 +40,7 @@ import { COSMIC_THEME } from './styles/theme.cosmic';
 import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
 import { ReportDisplayComponent } from './components/myComponents/report-display/report-display.component';
+import { ReportViewComponent } from './components/report-view/report-view.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -53,6 +55,7 @@ const NB_MODULES = [
   NbSelectModule,
   NbIconModule,
   NbEvaIconsModule,
+  // NbRadioModule,
 ];
 const COMPONENTS = [
   HeaderComponent,
@@ -61,7 +64,8 @@ const COMPONENTS = [
   TinyMCEComponent,
   OneColumnLayoutComponent,
   ThreeColumnsLayoutComponent,
-  TwoColumnsLayoutComponent
+  TwoColumnsLayoutComponent,
+  ReportViewComponent
 ];
 const PIPES = [
   CapitalizePipe,
@@ -74,7 +78,7 @@ const PIPES = [
 @NgModule({
   imports: [CommonModule, ...NB_MODULES],
   exports: [CommonModule, ...PIPES, ...COMPONENTS],
-  declarations: [...COMPONENTS, ...PIPES, ReportDisplayComponent],
+  declarations: [...COMPONENTS, ...PIPES, ReportDisplayComponent, ReportViewComponent],
 })
 export class ThemeModule {
   static forRoot(): ModuleWithProviders {
