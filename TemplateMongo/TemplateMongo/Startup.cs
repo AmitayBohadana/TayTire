@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +44,11 @@ namespace TemplateMongo
             services.AddSingleton<IBookstoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
 
+
+
+            //remove at deploy
+
+
             services.AddSingleton<ReportBLService>();
             services.AddSingleton<BookService>();
             services.AddSingleton<ReportService>();
@@ -50,6 +56,9 @@ namespace TemplateMongo
             services.AddSingleton<VehicleService>();
             services.AddSingleton<MailMsgService>();
             services.AddSingleton<RepairTypeService>();
+
+
+
             services.AddControllers();
            // services.AddMvc();
         }
@@ -68,12 +77,20 @@ namespace TemplateMongo
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseFileServer();
 
+            app.UseAuthorization();
+            
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                //endpoints.MapGet("/", async context =>
+                //{
+                //    await context.Response.WriteAsync("Hello World!");
+                //});
             });
+            
         }
 
 

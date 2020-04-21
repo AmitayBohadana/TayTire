@@ -5,10 +5,11 @@ import { AllReportsRoutingModule } from './all-reports-routing.module';
 import { NbCardModule, NbIconModule, NbInputModule, NbListModule, NbAccordionModule } from '@nebular/theme';
 import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { AllReportsComponent } from './all-reports.component';
 
 
 @NgModule({
-  declarations: [ReportPageComponent],
+  declarations: [ReportPageComponent,AllReportsComponent],
   imports: [
     CommonModule,
     AllReportsRoutingModule,
@@ -20,6 +21,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     NbInputModule,
     ThemeModule,
     Ng2SmartTableModule
-  ]
+  ],
+
 })
 export class AllReportsModule { }

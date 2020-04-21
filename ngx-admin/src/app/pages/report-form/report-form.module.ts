@@ -20,6 +20,7 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReportsRoutingModule } from './reports-routing.module';
 import { UdpCurrencyMaskPipe } from '../../@theme/pipes/UdpCurrencyMaskPipe';
+import { ReportFormComponent } from './report-form.component';
 
 
 
@@ -44,6 +45,7 @@ import { UdpCurrencyMaskPipe } from '../../@theme/pipes/UdpCurrencyMaskPipe';
   ],
   declarations: [
     ReportInputComponent,
+    ReportFormComponent
 
   ],
 

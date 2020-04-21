@@ -8,6 +8,7 @@ import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ReportFormModule } from './report-form/report-form.module';
+import { RepairTypesDialogComponent } from './repair-types-dialog/repair-types-dialog.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ReportFormModule } from './report-form/report-form.module';
     NbLayoutModule
   ],
   declarations: [
-    PagesComponent
+    PagesComponent,
+    RepairTypesDialogComponent
   ],
 })
 export class PagesModule {

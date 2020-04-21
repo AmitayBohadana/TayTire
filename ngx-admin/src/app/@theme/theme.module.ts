@@ -41,6 +41,7 @@ import { CORPORATE_THEME } from './styles/theme.corporate';
 import { DARK_THEME } from './styles/theme.dark';
 import { ReportDisplayComponent } from './components/myComponents/report-display/report-display.component';
 import { ReportViewComponent } from './components/report-view/report-view.component';
+import { UdpCurrencyMaskPipe } from './pipes/UdpCurrencyMaskPipe';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -73,6 +74,7 @@ const PIPES = [
   RoundPipe,
   TimingPipe,
   NumberWithCommasPipe,
+  UdpCurrencyMaskPipe
 ];
 
 @NgModule({
