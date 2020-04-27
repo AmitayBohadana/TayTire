@@ -16,7 +16,9 @@ import {
   templateUrl: './toastr.component.html',
 })
 export class ToastrComponent {
-  constructor(private toastrService: NbToastrService) {}
+  constructor(private toastrService: NbToastrService) {
+
+  }
 
   config: ToasterConfig;
 

@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap, takeWhile } from 'rxjs/operators';
+import { NbToastrService } from '@nebular/theme';
 
 
 
@@ -20,9 +21,9 @@ const httpOptions = {
 export class RestService implements OnDestroy {
 
   protected alive = true;
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private toastrService: NbToastrService) { }
 
-  ngOnDestroy(): void {
+ngOnDestroy(): void {
     this.alive = false;
   }
 
@@ -37,6 +38,23 @@ export class RestService implements OnDestroy {
       if(successCB != null){
         successCB(res);
       }
+    },
+    (reponse:HttpErrorResponse) => {
+
+      console.log(reponse.error);
+      this.displayErrorsToast(reponse.error.errors);
+  });
+  }
+  displayErrorsToast(errors: JSON) {
+
+    let values = Object.values(errors);
+    console.log("vlues: ", values);
+    values.forEach(fieldErrorMsgs =>{
+      let arr:Array<any> = fieldErrorMsgs;
+      arr.forEach(msg => {
+        console.log(msg);
+        this.toastrService.danger(msg);
+      });
     });
   }
 

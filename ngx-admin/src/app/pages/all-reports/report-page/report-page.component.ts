@@ -4,6 +4,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { ReportVM } from '../../../model/VM/reportVM';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'ngx-report-page',
@@ -57,11 +58,12 @@ export class ReportPageComponent implements OnInit {
       },
     },
   };
-
+  reportFG:FormGroup;
   source: LocalDataSource = new LocalDataSource();
   reports:Array<ReportVM> = new Array<ReportVM>();
   constructor(private reportService:ReportService) {
     this.source.load([{"carNum":"123344"},{"carNum":"123444444"}]);
+    this.createFormGroups();
    }
 
   ngOnInit() {
@@ -71,7 +73,22 @@ export class ReportPageComponent implements OnInit {
   getData(){
     this.reportService.requestData(this.reportsListCB.bind(this));
   }
+  createFormGroups(){
+    this.reportFG = new FormGroup({
+      confirmationNum: new FormControl('',[Validators.maxLength(12),Validators.required])
+    });
 
+  }
+  setConfirmation(report:ReportVM){
+    console.log("report confirmed req: ",report);
+    console.log("report confirmed req: ",this.reportFG.get("confirmationNum").value);
+    let confirmationNum = this.reportFG.get("confirmationNum").value;
+    report.confirmationNum = confirmationNum;
+    this.reportService.changeReportStatus(report,this.reportCB.bind(this));
+  }
+  reportCB(data){
+    console.log("repoty: ",data);
+  }
   reportsListCB(data){
 
     this.reports = data;

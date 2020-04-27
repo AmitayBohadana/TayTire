@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace TemplateMongo.Model
         public string tireCompany { get; set; }
 
         public User user { get; set; }
+      
         public string vehicle_id { get; set; }
         public List<WorkEvent> workEvents { get; set; }
         public string confirmationNum { get; set; }

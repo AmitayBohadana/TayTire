@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TemplateMongo.Model
 {
@@ -11,6 +12,7 @@ namespace TemplateMongo.Model
         public string Id { get; set; }
 
         [BsonElement("plateNum")]
+        [StringLength(10,ErrorMessage = "מספר רכב חייב להיות קטן מ10 ספרות")]
         public string plateNum { get; set; }
 
         public string manufacture { get; set; }

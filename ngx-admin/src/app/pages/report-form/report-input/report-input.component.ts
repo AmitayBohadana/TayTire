@@ -44,7 +44,7 @@ export class ReportInputComponent implements OnInit {
   }
   createFormGroups(){
     this.stage1form = new FormGroup({
-      carNum: new FormControl('',[Validators.maxLength(9),carNumberValidator(),Validators.required]),
+      carNum: new FormControl('',[Validators.maxLength(12),carNumberValidator(),Validators.required]),
       km: new FormControl('',[Validators.required,Validators.pattern("^[0-9]*$")]),
       tireSize: new FormControl('',[Validators.required]),
       speedCode: new FormControl('',[Validators.required]),
@@ -99,7 +99,7 @@ export class ReportInputComponent implements OnInit {
 
   GetNewReportByPlateNum(){
     this.loadVehicleData();
-    this.loading = true;
+    // this.loading = true;
     this.restService.post("api/Report1/GetNewReportByPlateNum",this.report,this.newReportByPlateNumCB.bind(this));
   }
 

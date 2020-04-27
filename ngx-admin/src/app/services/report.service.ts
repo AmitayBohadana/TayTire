@@ -8,6 +8,7 @@ import { Report } from '../model/report';
 export class ReportService {
 
 
+
   protected reports:Array<Report> = [];
 
   constructor(private restService:RestService) {
@@ -18,7 +19,9 @@ export class ReportService {
    requestData(sucessCB){
     this.restService.get("api/Report1",sucessCB,this.requestFailedCB.bind(this),this);
    }
-
+   changeReportStatus(report,sucessCB) {
+    this.restService.post("api/Report1/ChangeReportStatus",report,sucessCB,this.requestFailedCB.bind(this),this);
+  }
    requestFailedCB(data){
 
    }

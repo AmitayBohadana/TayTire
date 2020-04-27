@@ -41,16 +41,28 @@ namespace TemplateMongo.Services
                 list = new List<ReportVM>();
                 reports.ForEach(report =>
                 {
-                    //ReportVM reportVm = new ReportVM();
+                    ReportVM reportVm = convertToViewModel(report);
+                    /*
                     Vehicle vehicle = _vehicleService.Get(report.vehicle_id);
                     var serializedParent = JsonConvert.SerializeObject(report);
                     ReportVM reportVm = JsonConvert.DeserializeObject<ReportVM>(serializedParent);
-                    //reportVm = (ReportVM)report;
                     reportVm.vehicle = vehicle;
+                    */
+
                     list.Add(reportVm);
                 });
             }
             return list;
+        }
+
+        private ReportVM convertToViewModel(Report report)
+        {
+            ReportVM retVal;
+            Vehicle vehicle = _vehicleService.Get(report.vehicle_id);
+            var serializedParent = JsonConvert.SerializeObject(report);
+            retVal = JsonConvert.DeserializeObject<ReportVM>(serializedParent);
+            retVal.vehicle = vehicle;
+            return retVal;
         }
 
         public ReportVM Create(ReportVM reportVm)
@@ -60,6 +72,8 @@ namespace TemplateMongo.Services
                 Vehicle vehicle = updateOrCreateVehicle(reportVm);
                 //reportVm.vehicle.Id = vehicle.Id;
                 Report report = reportVm;
+
+                report.status = "ממתין";                
                 report.vehicle_id = vehicle.Id;
                 _reports.InsertOne(report);
             }
@@ -92,6 +106,20 @@ namespace TemplateMongo.Services
             }
             return retVal;
         }
+
+        internal ReportVM ChangeReportStatus(ReportVM reportVm)
+        {
+            ReportVM retVal = null;
+            if (reportVm.confirmationNum!= null)
+            {
+                reportVm.status = "confirmed";
+            }
+            _reportService.Update(reportVm.Id,reportVm);
+            Report report = _reportService.Get(reportVm.Id);
+            retVal = convertToViewModel(report);
+            return retVal;
+        }
+
         public Vehicle GetVehicle(ReportVM reportVm)
         {
             Vehicle vehicle = null;

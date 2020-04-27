@@ -49,7 +49,7 @@ namespace TemplateMongo.Controllers
 
             return report;
         }
-
+        /*
         [HttpPost]
         [Route("GetReportByPlateNum")]
         public ActionResult<ReportVM> GetReportByPlateNum(ReportVM reportVm)
@@ -67,7 +67,7 @@ namespace TemplateMongo.Controllers
             }
 
             return retVal;
-        }
+        }*/
 
         [HttpPost]
         [Route("GetNewReportByPlateNum")]
@@ -89,6 +89,20 @@ namespace TemplateMongo.Controllers
 
 
             return CreatedAtRoute("GetBook", new { id = reportVm.Id.ToString() }, reportVm);
+        }
+
+        [HttpPost]
+        [Route("ChangeReportStatus")]
+        public ActionResult<ReportVM> ChangeReportStatus(ReportVM reportVm)
+        {
+            ReportVM retVal = _reportBLService.ChangeReportStatus(reportVm);
+         
+            if (retVal == null)
+            {
+                return NotFound();
+            }
+
+            return retVal;
         }
 
         [HttpPut("{id:length(24)}")]
