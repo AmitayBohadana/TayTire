@@ -49,26 +49,7 @@ namespace TemplateMongo.Controllers
 
             return report;
         }
-        /*
-        [HttpPost]
-        [Route("GetReportByPlateNum")]
-        public ActionResult<ReportVM> GetReportByPlateNum(ReportVM reportVm)
-        {
-            //RepairType rtype = new RepairType();
-            //rtype.code = 3;
-            //rtype.type = "תיקון תקר";
-
-            //_repairTypeService.Create(rtype);
-            ReportVM retVal = _reportBLService.GetReportVmByPlateNum(reportVm);
-            //_mailService.sendMail();
-            if (retVal == null)
-            {
-                return NotFound();
-            }
-
-            return retVal;
-        }*/
-
+      
         [HttpPost]
         [Route("GetNewReportByPlateNum")]
         public ActionResult<ReportVM> GetNewReportByPlateNum(ReportVM reportVm)
@@ -86,6 +67,16 @@ namespace TemplateMongo.Controllers
         public ActionResult<ReportVM> Create(ReportVM reportVm)
         {
             _reportBLService.Create(reportVm);
+
+
+            return CreatedAtRoute("GetBook", new { id = reportVm.Id.ToString() }, reportVm);
+        }
+
+        [HttpPost]
+        [Route("CancelReport")]
+        public ActionResult<ReportVM> CancelReport(ReportVM reportVm)
+        {
+            _reportBLService.CancelReport(reportVm);
 
 
             return CreatedAtRoute("GetBook", new { id = reportVm.Id.ToString() }, reportVm);
@@ -135,18 +126,5 @@ namespace TemplateMongo.Controllers
             return NoContent();
         }
 
-
-        /*
-        [HttpPost]
-        [Route("newReport")]
-        public ActionResult<Report> newReport(Report report)
-        {
-            _reportService.Create(report);
-            var res = CreatedAtRoute("GetReport", new { id = report.Id.ToString() }, report);
-
-            return res;
-            
-        }
-        */
     }
 }

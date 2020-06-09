@@ -5,6 +5,7 @@ import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-header',
@@ -45,7 +46,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private themeService: NbThemeService,
               private userService: UserData,
               private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService) {
+              private breakpointService: NbMediaBreakpointsService,
+              private router:Router) {
   }
 
   ngOnInit() {
@@ -78,6 +80,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   changeTheme(themeName: string) {
     this.themeService.changeTheme(themeName);
+  }
+  navigateToNewReport(){
+    this.router.navigateByUrl('/pages/report-form');
+  }
+  navigateToReportDisplayPage(){
+    this.router.navigateByUrl('/pages/all-reports');
   }
 
   toggleSidebar(): boolean {

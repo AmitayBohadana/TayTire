@@ -81,6 +81,11 @@ namespace TemplateMongo.Services
             return reportVm;
         }
 
+        internal void CancelReport(ReportVM reportVm)
+        {
+            _reportService.Remove(reportVm);
+        }
+
         public ReportVM GetReportVmByPlateNum(ReportVM reportVm)
         {
             ReportVM retVal = null;

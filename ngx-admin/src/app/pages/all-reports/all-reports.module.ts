@@ -4,7 +4,6 @@ import { ReportPageComponent } from './report-page/report-page.component';
 import { AllReportsRoutingModule } from './all-reports-routing.module';
 import { NbCardModule, NbIconModule, NbInputModule, NbListModule, NbAccordionModule, NbButtonModule } from '@nebular/theme';
 import { ThemeModule } from '../../@theme/theme.module';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { AllReportsComponent } from './all-reports.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -21,7 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NbIconModule,
     NbInputModule,
     ThemeModule,
-    Ng2SmartTableModule,
+    // Ng2SmartTableModule,
     NbButtonModule,
     ReactiveFormsModule
   ],

@@ -28,17 +28,19 @@ namespace TemplateMongo.Controllers
         public ActionResult<List<Book>> Get() =>
                 _bookService.Get();
 
-        [HttpGet("{id:length(24)}", Name = "GetBook")]
-        public ActionResult<Book> Get(string id)
+        //[HttpGet("{id:length(24)}", Name = "GetBook")]
+        [HttpGet("byName")]
+        public ActionResult<List<string>> Get(string id)
         {
+            /*
             var book = _bookService.Get(id);
 
             if (book == null)
             {
                 return NotFound();
-            }
-
-            return book;
+            }*/
+            var retVal = new List<string> { "Michlin", "Pirelli", "Komho" , id };
+            return retVal;
         }
 
         [HttpPost]

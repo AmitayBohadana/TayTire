@@ -34,14 +34,13 @@ ngOnDestroy(): void {
   post(api:string,dto:object,successCB?,faliedCB?,self?){
     return this.http.post("/" +api,dto,httpOptions).pipe(takeWhile(()=>this.alive))
     .subscribe((res)=>{
-      console.log("server res: ",res);
+
       if(successCB != null){
         successCB(res);
       }
     },
     (reponse:HttpErrorResponse) => {
 
-      console.log(reponse.error);
       this.displayErrorsToast(reponse.error.errors);
   });
   }
@@ -62,14 +61,14 @@ ngOnDestroy(): void {
     return this.http.get("/" +api,httpOptions).pipe(takeWhile(()=>this.alive))
     .subscribe((res)=>{
       successCB(res);
-      console.log("server res: ",res);
+
     });
   }
   get2(api:string){
     return this.http.get(endpoint+api,httpOptions).pipe(takeWhile(()=>this.alive))
     .subscribe(([map,config]:[any,any])=>{
       let res = map;
-      console.log("server res: ",res);
+
     });
   }
   private extractData(res: Response) {

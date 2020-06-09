@@ -4,6 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class NumberWithCommasPipe implements PipeTransform {
 
   transform(input: number): string {
-    return new Intl.NumberFormat().format(input);
+    return input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // return new Intl.NumberFormat().format(input);
   }
 }

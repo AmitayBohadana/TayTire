@@ -12,6 +12,7 @@ import {
   NbSelectModule,
   NbIconModule,
   NbThemeModule,
+  NbLayoutDirection,
 
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -42,6 +43,7 @@ import { DARK_THEME } from './styles/theme.dark';
 import { ReportDisplayComponent } from './components/myComponents/report-display/report-display.component';
 import { ReportViewComponent } from './components/report-view/report-view.component';
 import { UdpCurrencyMaskPipe } from './pipes/UdpCurrencyMaskPipe';
+import {ToNumberPipe} from './pipes/toNumber.pipe';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -74,7 +76,8 @@ const PIPES = [
   RoundPipe,
   TimingPipe,
   NumberWithCommasPipe,
-  UdpCurrencyMaskPipe
+  UdpCurrencyMaskPipe,
+  ToNumberPipe
 ];
 
 @NgModule({
@@ -92,6 +95,7 @@ export class ThemeModule {
             name: 'default',
           },
           [ DEFAULT_THEME, COSMIC_THEME, CORPORATE_THEME, DARK_THEME ],
+           null,NbLayoutDirection.RTL
         ).providers,
       ],
     };

@@ -14,13 +14,18 @@ import {
   NbUserModule,
   NbStepperModule,
   NbListModule,
-  NbSpinnerModule
+  NbSpinnerModule,
+  NbAutocompleteModule
 } from '@nebular/theme';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReportsRoutingModule } from './reports-routing.module';
 import { UdpCurrencyMaskPipe } from '../../@theme/pipes/UdpCurrencyMaskPipe';
 import { ReportFormComponent } from './report-form.component';
+import { ToNumberPipe } from '../../@theme/pipes/toNumber.pipe';
+import { NumberWithCommasPipe } from '../../@theme/pipes';
+import { RepairChoiseModalComponent } from '../modal-overlays/repair-choise-modal/repair-choise-modal.component';
+import { ModalOverlaysModule } from '../modal-overlays/modal-overlays.module';
 
 
 
@@ -41,7 +46,9 @@ import { ReportFormComponent } from './report-form.component';
     ReactiveFormsModule,
     NbStepperModule,
     NbListModule,
-    NbSpinnerModule
+    NbSpinnerModule,
+    ModalOverlaysModule,
+    NbAutocompleteModule
   ],
   declarations: [
     ReportInputComponent,
@@ -49,7 +56,7 @@ import { ReportFormComponent } from './report-form.component';
 
   ],
 
-  providers:[UdpCurrencyMaskPipe],
+  providers:[UdpCurrencyMaskPipe,NumberWithCommasPipe,ToNumberPipe],
   entryComponents:[]
 })
 export class ReportFormModule { }

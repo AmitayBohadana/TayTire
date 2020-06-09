@@ -4,11 +4,11 @@
       <nb-step [label]="labelOne">
         <ng-template #labelOne>שלב 1</ng-template>
         <h3 (click)="formDataInsert(1)">פרטי רכב</h3>
-        <form  [formGroup]="this.stage1form"  [nbSpinner]="loading" nbSpinnerStatus="success" nbSpinnerSize="giant">
+        <form [formGroup]="this.stage1form" [nbSpinner]="loading" nbSpinnerStatus="success" nbSpinnerSize="giant">
           <div class="form-group row">
             <label for="inputEmail1" class="label col-sm-3 col-form-label">מספר רכב</label>
             <div class="col-sm-9">
-              <input type="text" nbInput fullWidth shape="semi-round" [status]="getStatus(1,'carNum')"
+              <input type="text" pattern="\d*" nbInput fullWidth shape="semi-round" [status]="getStatus(1,'carNum')"
                 placeholder="מס' רכב" formControlName="carNum" (focusout)="focusOutFunction('carNum')">
             </div>
             <!-- <button (click)="GetNewReportByPlateNum()">ייבא דיווח</button> -->
@@ -16,9 +16,12 @@
           <div class="form-group row">
             <label for="inputPassword2" class="label col-sm-3 col-form-label">קילומטר</label>
             <div class="col-sm-9">
-              <input type="number" nbInput fullWidth shape="semi-round" status="info" placeholder="כמה קילומטר?"
-                formControlName="km" [status]="getStatus(1,'km')">
+              <input type="number" pattern="\d*" nbInput fullWidth shape="semi-round" status="info"
+                placeholder="כמה קילומטר?" formControlName="km" [status]="getStatus(1,'km')">
             </div>
+
+            <!--               [value]="stage1form.get('km').value|toNumber |ngxNumberWithCommas" -->
+
           </div>
           <div class="form-group row">
             <label for="inputPassword2" class="label col-sm-3 col-form-label">מידת צמיג</label>
@@ -30,18 +33,18 @@
           <div class="form-group row">
             <label for="inputPassword2" class="label col-sm-3 col-form-label">קוד מהירות</label>
             <div class="col-sm-9">
-              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד מהירות"
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד מהירות ועומס"
                 formControlName="speedCode" [status]="getStatus(1,'speedCode')">
 
             </div>
           </div>
-          <div class="form-group row">
+          <!-- <div class="form-group row">
             <label for="inputPassword2" class="label col-sm-3 col-form-label">קוד עומס</label>
             <div class="col-sm-9">
               <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד עומס"
                 formControlName="omesCode" [status]="getStatus(1,'omesCode')">
             </div>
-          </div>
+          </div> -->
         </form>
         <!-- <button nbButton disabled nbStepperNext>הקודם</button> -->
         <button [disabled]="!stageComplete(1)" (click)="stage1complete()" nbButton nbStepperNext>הבא</button>
@@ -74,42 +77,83 @@
 
 <nb-card *ngIf="this.reportState == 2" class="col-md-12 col-lg-12 col-xxxl-12 direction">
   <nb-card-body>
-    <nb-stepper orientation="vertical">
+    <nb-stepper orientation="horizontal">
       <div class="row">
-        <nb-step *ngFor="let tire of getTires(); let i=index;" [label]="labelOne" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+        <nb-step *ngFor="let tire of getTires(); let i=index;" [label]="labelOne" [nbSpinner]="loading"
+          nbSpinnerStatus="info" nbSpinnerSize="giant">
           <ng-template #labelOne></ng-template>
-          <h3>צמיג {{i+1}}</h3>
+          <h3>{{tireHeadLine(tire)}}</h3>
           <form [formGroup]="this.stage3form">
 
             <div class="form-group row direction">
               <label class="label col-sm-3 col-form-label">יצרן</label>
               <div class="col-sm-9">
-                <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="יצרן"
-                  formControlName="manufacture" value="defualt value" [status]="getStatus(3,'manufacture')">
+                <!-- <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="יצרן"
+                  formControlName="manufacture" value="defualt value" [status]="getStatus(3,'manufacture')"
+                  autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
+                  class="form-control search-location" #search> -->
+
+                <input formControlName="manufacture" nbInput type="text" shape="semi-round" status="info" placeholder="יצרן" [status]="getStatus(3,'manufacture')"
+                  [nbAutocomplete]="autoControl" />
+
+                <nb-autocomplete #autoControl>
+
+                  <nb-option *ngFor="let option of filteredControlOptions$ | async" [value]="option">
+                    {{ option }}
+                  </nb-option>
+
+                </nb-autocomplete>
               </div>
             </div>
             <div class="form-group row direction">
-              <label class="label col-sm-3 col-form-label">קוד עומס ומהירות</label>
+              <!-- <label class="label col-sm-3 col-form-label">קוד עומס ומהירות</label>
               <div class="col-sm-9">
                 <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד עומס ומהירות"
                   formControlName="speedCode">
-              </div>
+              </div> -->
+
+              <input type="file" accept="image/*" capture="environment">
             </div>
             <div class="form-group row direction">
-              <label class="label col-sm-3 col-form-label">קוד תקלה</label>
-              <div class="col-sm-9">
+              <label class="label col-sm-3 col-form-label">בחר תקלה</label>
+              <!-- <div class="col-sm-9">
                 <input type="text" nbInput shape="semi-round" status="info" placeholder="קוד תקלה"
                   formControlName="repairType">
                 <button type="submit" nbButton status="primary" (click)="openRepairTypesDialog(tire)">בחר תקלה</button>
-              </div>
+              </div> -->
 
+              <nb-actions size="medium">
+                <nb-action title="מתוך רשימה" icon="menu-outline" (click)="openRepairTypesDialog(tire)"></nb-action>
+                <nb-action icon="search-outline"></nb-action>
+                <!-- <nb-action icon="email-outline"></nb-action> -->
+                <!-- <nb-action disabled icon="bell-outline"></nb-action> -->
+                <nb-action icon="settings-2-outline"></nb-action>
+              </nb-actions>
+
+            </div>
+            <div class="form-group row direction">
+              <label class="label col-sm-3 col-form-label">רשימת תקלות:</label>
               <nb-list>
                 <nb-list-item *ngFor="let workEvent of getWorkEvents(tire)">
-                  {{workEvent.repairType.type}}
+                  <div class="row">
+                    <div class="col-10">
+                      {{workEvent.repairType.type}}
+                    </div>
+                    <div class="col-2">
+                      <nb-icon (click)="removeRepairType(tire,workEvent)" icon="trash"></nb-icon>
+                    </div>
+                  </div>
+                  <div *ngIf="isNewTireType(workEvent)" class="row">
+                    <div class="col-10">
+                      במלאי: {{workEvent.item}}
+                    </div>
+                    <div class="col-2">
+                      <nb-icon (click)="removeRepairType(tire,workEvent)" icon="edit"></nb-icon>
+                    </div>
+                  </div>
                 </nb-list-item>
               </nb-list>
             </div>
-
           </form>
           <button [disabled]="i ==0" nbButton nbStepperPrevious (click)="prevTire(tire)">הקודם</button>
           <button nbButton nbStepperNext (click)="tireSubmit(tire)">הבא</button>
@@ -121,12 +165,8 @@
 
 
 
-<div class="form-group row">
-  <div class="offset-sm-3 col-sm-9">
-    <button (click)="this.submit()" type="submit" nbButton status="primary">סיימתי</button>
-  </div>
-</div>
 
+<!--
 <nb-card *ngIf="this.typesDialogOpen" class="direction">
   <nb-card-header>בחר תקלה</nb-card-header>
 
@@ -136,4 +176,12 @@
     </nb-list-item>
   </nb-list>
 
-</nb-card>
+</nb-card> -->
+
+
+<div class="form-group row">
+
+  <div class="offset-sm-3 col-sm-9">
+    <button (click)="this.submit()" type="submit" nbButton status="primary">סיימתי</button>
+  </div>
+</div>

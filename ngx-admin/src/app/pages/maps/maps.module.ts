@@ -14,7 +14,7 @@ import { MapsRoutingModule, routedComponents } from './maps-routing.module';
       apiKey: 'AIzaSyCpVhQiwAllg1RAFaxMWSpQruuGARy0Y1k',
       libraries: ['places'],
     }),
-    LeafletModule.forRoot(),
+    LeafletModule,
     MapsRoutingModule,
     NgxEchartsModule,
     NbCardModule,

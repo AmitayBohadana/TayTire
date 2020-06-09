@@ -8,7 +8,7 @@ import { ReportVM } from '../../../../model/VM/reportVM';
 })
 export class ReportDisplayComponent implements OnInit {
 
-  protected report:ReportVM = new ReportVM();
+  public report:ReportVM = new ReportVM();
   constructor() { }
 
   ngOnInit() {

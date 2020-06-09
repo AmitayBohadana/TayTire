@@ -6,6 +6,7 @@ public workDescription:string;
 public repairType:RepairType;
 public amount:number;
 public location:number;
+public item:string;
 
 /**
  *

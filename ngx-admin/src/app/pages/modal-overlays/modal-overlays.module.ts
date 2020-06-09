@@ -11,6 +11,7 @@ import {
   NbTabsetModule,
   NbTooltipModule,
   NbWindowModule,
+  NbListModule,
 } from '@nebular/theme';
 
 // modules
@@ -31,6 +32,7 @@ import {
   NgxPopoverTabsComponent,
 } from './popovers/popover-examples.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
+import { RepairChoiseModalComponent } from './repair-choise-modal/repair-choise-modal.component';
 
 
 
@@ -39,6 +41,7 @@ const COMPONENTS = [
   ToastrComponent,
   DialogComponent,
   ShowcaseDialogComponent,
+  RepairChoiseModalComponent,
   DialogNamePromptComponent,
   WindowComponent,
   WindowFormComponent,
@@ -51,6 +54,7 @@ const COMPONENTS = [
 
 const ENTRY_COMPONENTS = [
   ShowcaseDialogComponent,
+  RepairChoiseModalComponent,
   DialogNamePromptComponent,
   WindowFormComponent,
   NgxPopoverCardComponent,
@@ -72,6 +76,7 @@ const MODULES = [
   NbInputModule,
   NbSelectModule,
   NbTooltipModule,
+  NbListModule
 ];
 
 const SERVICES = [
@@ -89,7 +94,7 @@ const SERVICES = [
   ],
   entryComponents: [
     ...ENTRY_COMPONENTS,
-  ]
+  ],
 })
 export class ModalOverlaysModule {
 }

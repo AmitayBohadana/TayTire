@@ -6,11 +6,23 @@
 // framework component themes (styles tied to theme variables)
 @import '~@nebular/theme/styles/globals';
 @import '~@nebular/auth/styles/all';
-
+@import "~bootstrap/dist/css/bootstrap.css";
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
 @import '~bootstrap/scss/grid';
+
+@import '~typeface-exo/index.css';
+
+@import '~roboto-fontface/css/roboto/roboto-fontface.css';
+@import '~@fortawesome/fontawesome-free/css/all.css';
+@import '~socicon/css/socicon.css';
+// @import '~nebular-icons/scss/nebular-icons.scss';
+@import '~angular-tree-component/dist/angular-tree-component.css';
+@import '~pace-js/templates/pace-theme-flash.tmpl.css';
+@import '~leaflet/dist/leaflet.css';
+
+
 
 // loading progress bar theme
 @import './pace.theme';

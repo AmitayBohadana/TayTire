@@ -48,7 +48,7 @@ namespace TemplateMongo
 
             //remove at deploy
 
-
+            
             services.AddSingleton<ReportBLService>();
             services.AddSingleton<BookService>();
             services.AddSingleton<ReportService>();
@@ -56,8 +56,14 @@ namespace TemplateMongo
             services.AddSingleton<VehicleService>();
             services.AddSingleton<MailMsgService>();
             services.AddSingleton<RepairTypeService>();
+            services.AddSingleton<BaseDocumentService>();
+            services.AddSingleton<DocsService>();
+            services.AddSingleton<TireService>();
 
-
+            services.Configure<TireLocations>((settings) =>
+            {
+                Configuration.GetSection("HebrewTireLocations").Bind(settings);
+            });
 
             services.AddControllers();
            // services.AddMvc();
@@ -72,23 +78,37 @@ namespace TemplateMongo
             {
                 app.UseDeveloperExceptionPage();
             }
+            if (!env.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
+            
 
-            app.UseHttpsRedirection();
-
+            app.UseDefaultFiles(new DefaultFilesOptions
+            {
+                DefaultFileNames = new
+     List<string> { "index.html" }
+            });
+            
+            app.UseStaticFiles();
+            app.UseDirectoryBrowser();
+            //app.UseFileServer();
             app.UseRouting();
-
-            app.UseFileServer();
+            
+           
 
             app.UseAuthorization();
-            
+            //app.UseSession();
+            //app.UseSession();
             
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                /*
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
-                });
+                });*/
             });
             
         }

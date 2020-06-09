@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportService } from '../../../services/report.service';
-import { LocalDataSource } from 'ng2-smart-table';
+
 
 import { SmartTableData } from '../../../@core/data/smart-table';
 import { ReportVM } from '../../../model/VM/reportVM';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { saveAs } from 'file-saver';
 
+// declare var saveAs:any;
 @Component({
   selector: 'ngx-report-page',
   templateUrl: './report-page.component.html',
@@ -59,10 +61,11 @@ export class ReportPageComponent implements OnInit {
     },
   };
   reportFG:FormGroup;
-  source: LocalDataSource = new LocalDataSource();
+  // source: LocalDataSource = new LocalDataSource();
+  source;
   reports:Array<ReportVM> = new Array<ReportVM>();
   constructor(private reportService:ReportService) {
-    this.source.load([{"carNum":"123344"},{"carNum":"123444444"}]);
+    // this.source.load([{"carNum":"123344"},{"carNum":"123444444"}]);
     this.createFormGroups();
    }
 
@@ -80,14 +83,17 @@ export class ReportPageComponent implements OnInit {
 
   }
   setConfirmation(report:ReportVM){
-    console.log("report confirmed req: ",report);
-    console.log("report confirmed req: ",this.reportFG.get("confirmationNum").value);
     let confirmationNum = this.reportFG.get("confirmationNum").value;
     report.confirmationNum = confirmationNum;
     this.reportService.changeReportStatus(report,this.reportCB.bind(this));
   }
   reportCB(data){
-    console.log("repoty: ",data);
+  }
+  isConfirmed(report:ReportVM){
+    if(report.status == "confirmed"){
+      return true;
+    }
+    return false;
   }
   reportsListCB(data){
 
@@ -100,16 +106,39 @@ export class ReportPageComponent implements OnInit {
     this.reports.forEach(r => {
 
       let item = this.generateSmartTableItem(r);
-      this.source.load([item]);
+      // this.source.load([item]);
     });
   }
   generateSmartTableItem(r: ReportVM) {
     return {"carNum":r.vehicle.plateNum,"firstName":r.user.firstName,"phoneNum":r.user.phoneNum};
   }
   printReport(report){
-    this.reportService.printReport(report);
+    this.reportService.printReport(report,this.printReportCB.bind(this));
   }
   getReportHeader(report){
     return report.vehicle.plateNum + " - "+report.user.firstName;
+  }
+  printReportCB(res){
+
+    let pdfData = res;
+    var byte8Array = new Uint8Array(pdfData);
+    var file = new Blob([byte8Array]);
+    saveAs(file,"mypdf.pdf");
+
+    // var fileURL = URL.createObjectURL(file);
+    // window.open(fileURL); // if you want to open it in new tab
+  }
+  removeItem(report){
+    this.reportService.removeReport(report,this.removeCB.bind(this));
+    return false;
+  }
+
+  removeCB(data){
+    console.log("data: ",data);
+    this.getData();
+  }
+
+  stopPropagation(event){
+    event.stopPropagation();
   }
 }
