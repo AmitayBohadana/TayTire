@@ -13,6 +13,7 @@ namespace TemplateMongo.Model {
         public RepairType repairType { get; set; }
         public int amount { get; set; }
         public int location { get; set; }
+        public string item { get; set; }
 
-    }
+}
 }

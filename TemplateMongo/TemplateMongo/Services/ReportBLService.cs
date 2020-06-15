@@ -17,11 +17,13 @@ namespace TemplateMongo.Services
         private readonly DataService _dataService;
         private readonly VehicleService _vehicleService;
         private readonly ReportService _reportService;
-        public ReportBLService(ITayTireDatabaseSettings settings,DataService dataService, VehicleService vehicleService,ReportService reportService)
+        private readonly IGlobalSettings _globalSettings;
+        public ReportBLService(ITayTireDatabaseSettings settings,IGlobalSettings globalSettings,DataService dataService, VehicleService vehicleService,ReportService reportService)
         {
             _dataService = dataService;
             _vehicleService = vehicleService;
             _reportService = reportService;
+            _globalSettings = globalSettings;
             if (settings != null)
             {
                 var client = new MongoClient(settings.ConnectionString);
@@ -33,6 +35,7 @@ namespace TemplateMongo.Services
 
         internal ActionResult<List<ReportVM>> GetAllReportVM()
         {
+            
             List<ReportVM> list = null;
             List<Report> reports = null;
             reports = _reportService.Get();
@@ -86,6 +89,8 @@ namespace TemplateMongo.Services
             _reportService.Remove(reportVm);
         }
 
+        
+
         public ReportVM GetReportVmByPlateNum(ReportVM reportVm)
         {
             ReportVM retVal = null;
@@ -111,10 +116,63 @@ namespace TemplateMongo.Services
             }
             return retVal;
         }
+        internal ReportVM SetReportConfirmed(ReportVM reportVm)
+        {
+            ReportVM retVal = null;
+            if (reportVm.confirmationNum != null)
+            {
+                reportVm.status = "confirmed";
+            }
+            _reportService.Update(reportVm.Id, reportVm);
+
+            reportVm.vehicle = updateByWorkEvents(reportVm.Id, reportVm);//Todo need to be tested
+            _vehicleService.Update(reportVm.vehicle.Id,reportVm.vehicle);
+
+            Report report = _reportService.Get(reportVm.Id);
+            retVal = convertToViewModel(report);
+            return retVal;
+        }
+
+        private Vehicle updateByWorkEvents(string id, ReportVM reportVm)
+        {
+            Vehicle vehicle = reportVm.vehicle;
+            reportVm.workEvents.ForEach(work =>
+            {
+                if (isTireChangeEvent(work))
+                {
+                    changeTire(vehicle, work);
+                }
+            });
+
+            return vehicle;
+        }
+
+        private void changeTire(Vehicle vehicle, WorkEvent work)
+        {
+            vehicle.tires.ForEach(tire =>
+            {
+                if (tire.location == work.location)
+                {
+                    tire.manufacture = work.item;
+                }
+            });
+        }
+
+        private bool isTireChangeEvent(WorkEvent work)
+        {
+            bool retVal = false;
+            if(work.repairType.code == _globalSettings.NewTireCode)
+            {
+                retVal = true;
+            }
+
+            return retVal;
+        }
 
         internal ReportVM ChangeReportStatus(ReportVM reportVm)
         {
             ReportVM retVal = null;
+            
             if (reportVm.confirmationNum!= null)
             {
                 reportVm.status = "confirmed";

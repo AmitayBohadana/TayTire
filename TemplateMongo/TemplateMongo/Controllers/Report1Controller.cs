@@ -87,7 +87,21 @@ namespace TemplateMongo.Controllers
         public ActionResult<ReportVM> ChangeReportStatus(ReportVM reportVm)
         {
             ReportVM retVal = _reportBLService.ChangeReportStatus(reportVm);
-         
+            
+            if (retVal == null)
+            {
+                return NotFound();
+            }
+
+            return retVal;
+        }
+
+        [HttpPost]
+        [Route("SetReportConfirmed")]
+        public ActionResult<ReportVM> SetReportConfirmed(ReportVM reportVm)
+        {
+            ReportVM retVal = _reportBLService.SetReportConfirmed(reportVm);
+
             if (retVal == null)
             {
                 return NotFound();

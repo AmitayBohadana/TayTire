@@ -11,7 +11,6 @@
               <input type="text" pattern="\d*" nbInput fullWidth shape="semi-round" [status]="getStatus(1,'carNum')"
                 placeholder="מס' רכב" formControlName="carNum" (focusout)="focusOutFunction('carNum')">
             </div>
-            <!-- <button (click)="GetNewReportByPlateNum()">ייבא דיווח</button> -->
           </div>
           <div class="form-group row">
             <label for="inputPassword2" class="label col-sm-3 col-form-label">קילומטר</label>
@@ -19,9 +18,6 @@
               <input type="number" pattern="\d*" nbInput fullWidth shape="semi-round" status="info"
                 placeholder="כמה קילומטר?" formControlName="km" [status]="getStatus(1,'km')">
             </div>
-
-            <!--               [value]="stage1form.get('km').value|toNumber |ngxNumberWithCommas" -->
-
           </div>
           <div class="form-group row">
             <label for="inputPassword2" class="label col-sm-3 col-form-label">מידת צמיג</label>
@@ -38,13 +34,23 @@
 
             </div>
           </div>
-          <!-- <div class="form-group row">
-            <label for="inputPassword2" class="label col-sm-3 col-form-label">קוד עומס</label>
+          <h3 (click)="formDataInsert(2)">פרטי נהג</h3>
+
+          <div class="form-group row direction">
+            <label for="inputEmail1" class="label col-sm-3 col-form-label">שם מלא</label>
             <div class="col-sm-9">
-              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד עומס"
-                formControlName="omesCode" [status]="getStatus(1,'omesCode')">
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="שם מלא"
+                formControlName="fullName">
             </div>
-          </div> -->
+          </div>
+          <div class="form-group row direction">
+            <label for="inputPassword2" class="label col-sm-3 col-form-label">מס' טלפון</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="מס' טלפון"
+                formControlName="phoneNum">
+            </div>
+          </div>
+
         </form>
         <!-- <button nbButton disabled nbStepperNext>הקודם</button> -->
         <button [disabled]="!stageComplete(1)" (click)="stage1complete()" nbButton nbStepperNext>הבא</button>
@@ -105,14 +111,16 @@
                 </nb-autocomplete>
               </div>
             </div>
+            <button (click)="test()">test</button>
             <div class="form-group row direction">
-              <!-- <label class="label col-sm-3 col-form-label">קוד עומס ומהירות</label>
+              <label class="label col-sm-3 col-form-label">תמונה</label>
               <div class="col-sm-9">
-                <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד עומס ומהירות"
-                  formControlName="speedCode">
-              </div> -->
+                <!-- <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="קוד עומס ומהירות"
+                  formControlName="speedCode"> -->
+                  <input type="file" accept="image/*" formControlName="image" (change)="addFile($event,tire)" capture="environment">
+              </div>
 
-              <input type="file" accept="image/*" capture="environment">
+
             </div>
             <div class="form-group row direction">
               <label class="label col-sm-3 col-form-label">בחר תקלה</label>

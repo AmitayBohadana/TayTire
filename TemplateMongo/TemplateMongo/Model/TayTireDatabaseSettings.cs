@@ -14,8 +14,19 @@ namespace TemplateMongo.Model
         public string VehicleCollectionName { get; set; }
         public string TireBrandCollectionName { get; set; }
         public string RepairTypeCollectionName { get; set; }
+        public string ImagesCollectionName { get; set; }
     }
 
+    public class GlobalSettings : IGlobalSettings
+    {
+        public int NewTireCode { get; set; }
+    }
+
+    public interface IGlobalSettings
+    {
+        public int NewTireCode { get; set; }
+
+    }
     public interface ITayTireDatabaseSettings
     {
         string TayTireCollectionName { get; set; }
@@ -25,5 +36,6 @@ namespace TemplateMongo.Model
         string RepairTypeCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
+        string ImagesCollectionName { get; set; }
     }
 }

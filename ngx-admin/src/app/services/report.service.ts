@@ -11,6 +11,7 @@ export class ReportService {
 
 
 
+
   protected reports:Array<Report> = [];
 
   constructor(private restService:RestService) {
@@ -26,6 +27,9 @@ export class ReportService {
   }
    changeReportStatus(report,sucessCB) {
     this.restService.post("api/Report1/ChangeReportStatus",report,sucessCB,this.requestFailedCB.bind(this),this);
+  }
+  setReportConfirmed(report: ReportVM,sucessCB) {
+    this.restService.post("api/Report1/SetReportConfirmed",report,sucessCB,this.requestFailedCB.bind(this),this);
   }
    requestFailedCB(data){
 

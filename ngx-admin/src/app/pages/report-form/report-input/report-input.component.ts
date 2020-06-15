@@ -21,6 +21,7 @@ import { Subscription, Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { TireService } from '../../../services/tire.service';
 import { TireBrand } from '../../../model/TireBrand';
+import { TirePic } from '../../../model/TirePic';
 
 
 
@@ -32,7 +33,7 @@ import { TireBrand } from '../../../model/TireBrand';
 export class ReportInputComponent implements OnInit, OnDestroy {
 
   public report: ReportVM = new ReportVM();
-  public reportState = 2;
+  public reportState = 1;
   public currentTire: Tire;
   public currentRepairType: RepairType;
   public typesDialogOpen = false;
@@ -52,13 +53,6 @@ export class ReportInputComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit() {
-    // this.setSubscribers();
-    // this.filteredControlOptions$ = of(this.tireService.brandsOptions);
-
-    // this.filteredControlOptions$ = this.stage3form.get('manufacture').valueChanges
-    // .pipe(startWith(''), map(filterString => this.filter(filterString)),
-    // );
-
     this.subArray.add(this.stage3form.get('manufacture').valueChanges.subscribe(
       term => {
         console.log("value changedL ",term);
@@ -109,7 +103,8 @@ export class ReportInputComponent implements OnInit, OnDestroy {
       manufacture: new FormControl('', [Validators.required]),
       speedCode: new FormControl('', [Validators.required]),
       // omesCode: new FormControl('',[Validators.required]),
-      repairType: new FormControl('', [Validators.required])
+      repairType: new FormControl('', [Validators.required]),
+      image: new FormControl('', [Validators.required])
     });
   }
   loadTireToView(tire: Tire) {
@@ -308,12 +303,6 @@ export class ReportInputComponent implements OnInit, OnDestroy {
   tireSubmit(tire: Tire) {
     this.loadViewToTire(tire);
     this.setCurrentTireByLocation(tire.location + 1);
-    // tire.manufacture = this.stage3form.get('manufacture').value;
-    // if(this.currentRepairType != null){
-    //   this.newWorkEvent(tire);
-    // }
-
-    // this.nextTire();
   }
 
   nextTire() {
@@ -334,11 +323,30 @@ export class ReportInputComponent implements OnInit, OnDestroy {
       }
     });
   }
+//   handleFileInput(files: FileList) {
+//     this.fileToUpload = files.item(0);
+// }
+  test(){
+    console.log("value: ",this.stage3form.get('image').value);
+  }
   setCurrentTire(tire: Tire) {
     this.currentTire = tire;
 
   }
+  public addFile(element,tire:Tire) {
+  const formData = new FormData();
+  let tirePic = new TirePic();
+  tire.image = element.target.files.item(0);
 
+  formData.append('image', tire.image, tire.image.name);
+  formData.append('manufacture', tire.manufacture);
+  formData.append('location', tire.location.toString());
+  console.log("tire: ",tire);
+  this.restService.postWithFile("api/Image", formData,this.postImageCB.bind(this));
+  }
+  postImageCB(picId){
+    console.log("picId: ",picId);
+  }
   repairSubmit(type) {
 
     this.stage3form.get('repairType').setValue(type.type);

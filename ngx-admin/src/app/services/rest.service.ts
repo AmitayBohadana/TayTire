@@ -44,6 +44,27 @@ ngOnDestroy(): void {
       this.displayErrorsToast(reponse.error.errors);
   });
   }
+  postWithFile(api:string,dto:object,successCB?,faliedCB?,self?){
+    let Options = {
+      headers: new HttpHeaders({
+        'Content-Disposition': 'multipart/form-data',
+        'Accept':  'application/json'
+      })
+    };
+
+
+    return this.http.post("/" +api,dto,Options).pipe(takeWhile(()=>this.alive))
+    .subscribe((res)=>{
+      console.log("tire id: ",res);
+      if(successCB != null){
+        successCB(res);
+      }
+    },
+    (reponse:HttpErrorResponse) => {
+
+      this.displayErrorsToast(reponse.error.errors);
+  });
+  }
   displayErrorsToast(errors: JSON) {
 
     let values = Object.values(errors);

@@ -85,7 +85,8 @@ export class ReportPageComponent implements OnInit {
   setConfirmation(report:ReportVM){
     let confirmationNum = this.reportFG.get("confirmationNum").value;
     report.confirmationNum = confirmationNum;
-    this.reportService.changeReportStatus(report,this.reportCB.bind(this));
+    // this.reportService.changeReportStatus(report,this.reportCB.bind(this));
+    this.reportService.setReportConfirmed(report,this.reportCB.bind(this));
   }
   reportCB(data){
   }

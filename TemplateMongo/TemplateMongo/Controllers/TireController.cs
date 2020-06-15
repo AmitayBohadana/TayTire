@@ -29,6 +29,20 @@ namespace TemplateMongo.Controllers
             return retVal;
         }
 
+        [HttpPost]
+        [Route("CreateTire")]
+        public ActionResult<Tire> CreateTire([FromForm]Tire tire)
+        {
+            Tire retVal=null;// = _reportBLService.SetReportConfirmed(reportVm);
+
+            if (retVal == null)
+            {
+                return NotFound();
+            }
+
+            return retVal;
+        }
+
 
     }
 }

@@ -36,6 +36,12 @@ namespace TemplateMongo
 
             services.AddSingleton<ITayTireDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<TayTireDatabaseSettings>>().Value);
+
+            services.Configure<GlobalSettings>(
+                Configuration.GetSection(nameof(GlobalSettings)));
+
+            services.AddSingleton<IGlobalSettings>(sp =>
+                sp.GetRequiredService<IOptions<GlobalSettings>>().Value);
             //
             // requires using Microsoft.Extensions.Options
             services.Configure<BookstoreDatabaseSettings>(
@@ -59,6 +65,7 @@ namespace TemplateMongo
             services.AddSingleton<BaseDocumentService>();
             services.AddSingleton<DocsService>();
             services.AddSingleton<TireService>();
+            services.AddSingleton<ImageService>();
 
             services.Configure<TireLocations>((settings) =>
             {
