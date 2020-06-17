@@ -23,7 +23,7 @@ namespace TemplateMongo.Services
             _reports.Find(report => true).ToList();
 
         public Report Get(string id) =>
-            _reports.Find<Report>(report => report.Id == id).FirstOrDefault();
+            _reports.Find<Report>(report => report.Id == id ).FirstOrDefault();
 
         public Report Create(Report report)
         {

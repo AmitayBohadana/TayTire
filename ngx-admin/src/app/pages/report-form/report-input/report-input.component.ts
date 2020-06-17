@@ -388,9 +388,7 @@ export class ReportInputComponent implements OnInit, OnDestroy {
     let formGroup: FormGroup = this.getFormGroupByStage(stage);
 
     if (formControlName == 'carNum') {
-      console.log("fg: ", (formGroup.get(formControlName)));
 
-      console.log("valid: ", (formGroup.get(formControlName).valid));
     }
 
 
@@ -501,16 +499,12 @@ export class ReportInputComponent implements OnInit, OnDestroy {
       this.stage1form.get('carNum').setValue(vehicle.plateNum);
       this.stage1form.get('km').setValue(vehicle.km);
       this.stage1form.get('tireSize').setValue(vehicle.tireSize);
-      this.stage1form.get('speedCode').setValue(vehicle.tireSize);
-      this.stage1form.get('omesCode').setValue(vehicle.tireSize);
+      this.stage1form.get('speedCode').setValue("92V");
 
     }
     if (stage == 2) {
-      let vehicle: Vehicle = this.generateVehicle();
-      this.stage2form.get('fullName').setValue("אבי ביטר");
+      this.stage2form.get('fullName').setValue("מישהו");
       this.stage2form.get('phoneNum').setValue("051511111");
-
-
     }
   }
 
@@ -518,9 +512,10 @@ export class ReportInputComponent implements OnInit, OnDestroy {
   generateVehicle() {
     let vehicle = new Vehicle();
     // vehicle.Id="4444";
-    vehicle.plateNum = "7999672";
+    vehicle.plateNum = "1111111";
     vehicle.km = 15000;
-    vehicle.tireSize = "175/65/14";
+    vehicle.tireSize = "175/65R14";
+
     vehicle.tires = new Array<Tire>();
     vehicle.tires.push(this.generateTire());
     vehicle.tires.push(this.generateTire());

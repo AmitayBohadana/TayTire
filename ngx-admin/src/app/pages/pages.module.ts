@@ -9,6 +9,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { ReportFormModule } from './report-form/report-form.module';
 import { RepairTypesDialogComponent } from './repair-types-dialog/repair-types-dialog.component';
+import { BaseComponent } from './base/base.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { RepairTypesDialogComponent } from './repair-types-dialog/repair-types-d
   ],
   declarations: [
     PagesComponent,
-    RepairTypesDialogComponent
+    RepairTypesDialogComponent,
+    BaseComponent
   ],
 })
 export class PagesModule {

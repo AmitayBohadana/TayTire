@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { RestService } from './rest.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { debounceTime, map } from 'rxjs/operators';
+import { RepairType } from '../model/repairType';
+import { WorkEvent } from '../model/workEvent';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -34,6 +36,18 @@ export class TireService {
           }
         ));
     return listOfBooks;
+  }
+
+  createWorkEvent(type: RepairType,location,item) {
+    let work = new WorkEvent();
+    work.location = location;
+
+    work.repairType = type;
+    work.amount++;
+    if (type.code == 5) {
+      item = "Michlin";
+    }
+    return work;
   }
 
 }

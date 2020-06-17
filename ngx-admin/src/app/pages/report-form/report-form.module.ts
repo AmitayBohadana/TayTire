@@ -26,6 +26,7 @@ import { ToNumberPipe } from '../../@theme/pipes/toNumber.pipe';
 import { NumberWithCommasPipe } from '../../@theme/pipes';
 import { RepairChoiseModalComponent } from '../modal-overlays/repair-choise-modal/repair-choise-modal.component';
 import { ModalOverlaysModule } from '../modal-overlays/modal-overlays.module';
+import { TireFormComponent } from './tire-form/tire-form.component';
 
 
 
@@ -52,7 +53,8 @@ import { ModalOverlaysModule } from '../modal-overlays/modal-overlays.module';
   ],
   declarations: [
     ReportInputComponent,
-    ReportFormComponent
+    ReportFormComponent,
+    TireFormComponent
 
   ],
 

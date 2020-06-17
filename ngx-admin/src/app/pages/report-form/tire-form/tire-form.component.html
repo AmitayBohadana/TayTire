@@ -1,0 +1,65 @@
+<p>tire-form works! {{this.tire.location}}</p>
+
+<form [formGroup]="this.fg">
+
+  <div class="form-group row direction">
+    <label class="label col-sm-3 col-form-label">יצרן</label>
+    <div class="col-sm-9">
+
+
+      <input formControlName="manufacture" nbInput type="text" shape="semi-round" status="info"
+        placeholder="יצרן" [status]="getStatus('manufacture')" [nbAutocomplete]="autoControl" />
+
+      <nb-autocomplete #autoControl>
+
+        <nb-option *ngFor="let option of filteredControlOptions$ | async" [value]="option">
+          {{ option }}
+        </nb-option>
+
+      </nb-autocomplete>
+    </div>
+  </div>
+  <button (click)="test()">test</button>
+  <div class="form-group row direction">
+    <label class="label col-sm-3 col-form-label">תמונה</label>
+    <div class="col-sm-9">
+
+      <input type="file" accept="image/*" formControlName="image" (change)="addFile($event)"
+        capture="environment">
+    </div>
+
+
+  </div>
+  <div class="form-group row direction">
+    <label class="label col-sm-3 col-form-label">בחר תקלה</label>
+    <nb-actions size="medium">
+      <nb-action title="מתוך רשימה" icon="menu-outline" (click)="openRepairTypesDialog()"></nb-action>
+      <nb-action icon="search-outline"></nb-action>
+      <nb-action icon="settings-2-outline"></nb-action>
+    </nb-actions>
+
+  </div>
+  <div class="form-group row direction">
+    <label class="label col-sm-3 col-form-label">רשימת תקלות:</label>
+    <nb-list>
+      <nb-list-item *ngFor="let workEvent of getWorkEvents(tire)">
+        <div class="row">
+          <div class="col-10">
+            {{workEvent.repairType.type}}
+          </div>
+          <div class="col-2">
+            <nb-icon (click)="removeRepairType(tire,workEvent)" icon="trash"></nb-icon>
+          </div>
+        </div>
+        <div *ngIf="isNewTireType(workEvent)" class="row">
+          <div class="col-10">
+            במלאי: {{workEvent.item}}
+          </div>
+          <div class="col-2">
+            <nb-icon (click)="removeRepairType(tire,workEvent)" icon="edit"></nb-icon>
+          </div>
+        </div>
+      </nb-list-item>
+    </nb-list>
+  </div>
+</form>
