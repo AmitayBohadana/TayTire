@@ -55,17 +55,17 @@ namespace TemplateMongo
             //remove at deploy
 
             
-            services.AddSingleton<ReportBLService>();
-            services.AddSingleton<BookService>();
-            services.AddSingleton<ReportService>();
-            services.AddSingleton<DataService>();
-            services.AddSingleton<VehicleService>();
-            services.AddSingleton<MailMsgService>();
-            services.AddSingleton<RepairTypeService>();
-            services.AddSingleton<BaseDocumentService>();
-            services.AddSingleton<DocsService>();
-            services.AddSingleton<TireService>();
-            services.AddSingleton<ImageService>();
+            //services.AddSingleton<ReportBLService>();
+            //services.AddSingleton<BookService>();
+            //services.AddSingleton<ReportService>();
+            //services.AddSingleton<DataService>();
+            //services.AddSingleton<VehicleService>();
+            //services.AddSingleton<MailMsgService>();
+            //services.AddSingleton<RepairTypeService>();
+            //services.AddSingleton<BaseDocumentService>();
+            //services.AddSingleton<DocsService>();
+            //services.AddSingleton<TireService>();
+            //services.AddSingleton<ImageService>();
 
             services.Configure<TireLocations>((settings) =>
             {
