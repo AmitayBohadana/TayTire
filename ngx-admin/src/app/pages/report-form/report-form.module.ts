@@ -54,7 +54,7 @@ import { TireFormComponent } from './tire-form/tire-form.component';
   declarations: [
     ReportInputComponent,
     ReportFormComponent,
-    TireFormComponent
+    TireFormComponent,
 
   ],
 
