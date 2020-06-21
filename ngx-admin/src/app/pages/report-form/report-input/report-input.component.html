@@ -73,7 +73,7 @@
           <ng-template #labelOne></ng-template>
           <h3>{{tireHeadLine(tire)}}</h3>
           <ngx-tire-form [tire]=tire></ngx-tire-form>
-          <form [formGroup]="this.stage3form">
+          <!-- <form [formGroup]="this.stage3form">
 
             <div class="form-group row direction">
               <label class="label col-sm-3 col-form-label">יצרן</label>
@@ -105,17 +105,12 @@
             </div>
             <div class="form-group row direction">
               <label class="label col-sm-3 col-form-label">בחר תקלה</label>
-              <!-- <div class="col-sm-9">
-                <input type="text" nbInput shape="semi-round" status="info" placeholder="קוד תקלה"
-                  formControlName="repairType">
-                <button type="submit" nbButton status="primary" (click)="openRepairTypesDialog(tire)">בחר תקלה</button>
-              </div> -->
+
 
               <nb-actions size="medium">
                 <nb-action title="מתוך רשימה" icon="menu-outline" (click)="openRepairTypesDialog(tire)"></nb-action>
                 <nb-action icon="search-outline"></nb-action>
-                <!-- <nb-action icon="email-outline"></nb-action> -->
-                <!-- <nb-action disabled icon="bell-outline"></nb-action> -->
+
                 <nb-action icon="settings-2-outline"></nb-action>
               </nb-actions>
 
@@ -143,7 +138,7 @@
                 </nb-list-item>
               </nb-list>
             </div>
-          </form>
+          </form> -->
           <button [disabled]="i ==0" nbButton nbStepperPrevious (click)="prevTire(tire)">הקודם</button>
           <button nbButton nbStepperNext (click)="tireSubmit(tire)">הבא</button>
         </nb-step>

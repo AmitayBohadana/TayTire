@@ -50,4 +50,29 @@ export class TireService {
     return work;
   }
 
+  generateWorkEvents() {
+    let events = new Array<WorkEvent>();
+    events.push(this.generateWorkEvent());
+    events.push(this.generateWorkEvent());
+    events.push(this.generateWorkEvent());
+    return events;
+  }
+  generateWorkEvent(): WorkEvent {
+    let event = new WorkEvent();
+    // event.Id ="4444";
+    event.workDescription = "תיקון תקר";
+    return event;
+  }
+  removeFromArray(arr: Array<any>, element) {
+    let index: number = arr.indexOf(element);
+    let deletedElement = null;
+    if (index !== -1) {
+      deletedElement = arr.splice(index, 1);
+    }
+    if (deletedElement != null) {
+      return true;
+    }
+    return false;
+  }
+
 }

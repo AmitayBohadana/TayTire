@@ -1,4 +1,3 @@
-<p>tire-form works! {{this.tire.location}}</p>
 
 <form [formGroup]="this.fg">
 
@@ -42,13 +41,13 @@
   <div class="form-group row direction">
     <label class="label col-sm-3 col-form-label">רשימת תקלות:</label>
     <nb-list>
-      <nb-list-item *ngFor="let workEvent of getWorkEvents(tire)">
+      <nb-list-item *ngFor="let workEvent of getWorkEvents()">
         <div class="row">
           <div class="col-10">
             {{workEvent.repairType.type}}
           </div>
           <div class="col-2">
-            <nb-icon (click)="removeRepairType(tire,workEvent)" icon="trash"></nb-icon>
+            <nb-icon (click)="removeRepairType(workEvent)" icon="trash"></nb-icon>
           </div>
         </div>
         <div *ngIf="isNewTireType(workEvent)" class="row">

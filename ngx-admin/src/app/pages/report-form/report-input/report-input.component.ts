@@ -40,7 +40,7 @@ export class ReportInputComponent implements OnInit, OnDestroy {
   public loading = false;
   public stage1form: FormGroup;
   public stage2form: FormGroup;
-  public stage3form: FormGroup;
+
   public subArray: Subscription = new Subscription();
 
   myTireBrandsOptions = <any>[];
@@ -53,19 +53,7 @@ export class ReportInputComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit() {
-    this.subArray.add(this.stage3form.get('manufacture').valueChanges.subscribe(
-      term => {
-        console.log("value changedL ",term);
 
-        if(term){
-          this.tireService.search(term).subscribe(
-            data => {
-
-              this.myTireBrandsOptions = data as any[];
-              this.filteredControlOptions$ = of(this.myTireBrandsOptions);
-          })
-        }
-    }))
   }
 
   ngOnDestroy(): void {
@@ -74,50 +62,21 @@ export class ReportInputComponent implements OnInit, OnDestroy {
     }
   }
 
-  private filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    // return this.tireService.brandsOptions.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
-    return this.myTireBrandsOptions.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
-  }
-
-
-
   open() {
 
   }
-
 
   createFormGroups() {
     this.stage1form = new FormGroup({
       carNum: new FormControl('', [Validators.maxLength(12), carNumberValidator(), Validators.required]),
       km: new FormControl('', [Validators.required]),
       tireSize: new FormControl('', [Validators.required, Validators.pattern(/^(\d{1,3}(?:\.\d)?)(?:[/X](\d{1,2}(?:\.\d)?)?)?([RBD])(\d{1,2}(?:\.\d)?)$/)]),
-      speedCode: new FormControl('', [Validators.required, Validators.pattern(/^\d{2,3}([LMNPQRSTUVWXYZ])$/)])
-      // ,omesCode: new FormControl('',[Validators.required])
-    });
-    this.stage2form = new FormGroup({
+      speedCode: new FormControl('', [Validators.required, Validators.pattern(/^\d{2,3}([LMNPQRSTUVWXYZ])$/)]),
       fullName: new FormControl('', [Validators.required]),
       phoneNum: new FormControl('', [Validators.required])
     });
-    this.stage3form = new FormGroup({
-      manufacture: new FormControl('', [Validators.required]),
-      speedCode: new FormControl('', [Validators.required]),
-      // omesCode: new FormControl('',[Validators.required]),
-      repairType: new FormControl('', [Validators.required]),
-      image: new FormControl('', [Validators.required])
-    });
   }
-  loadTireToView(tire: Tire) {
-    this.stage3form.reset();
-    this.stage3form.get('manufacture').setValue(tire.manufacture);
-    this.stage3form.get('speedCode').setValue(tire.speedCode);
-    // this.stage3form.get('omesCode').setValue(tire.omesCode);
-  }
-  loadViewToTire(tire) {
-    tire.manufacture = this.stage3form.get('manufacture').value;
-    tire.speedCode = this.stage3form.get('speedCode').value;
-    // tire.omesCode = this.stage3form.get('omesCode').value;
-  }
+
   getRepairTypes() {
     return this.repairTypesService.GetRepairTypes();
   }
@@ -184,30 +143,8 @@ export class ReportInputComponent implements OnInit, OnDestroy {
 
 
   }
-  openRepairTypesDialog(tire) {
-    this.open();
-    let sub = this.dialogService.open(RepairChoiseModalComponent, {
-      context: {
-        repairTypes: this.getRepairTypes(),
-      },
-    });
-    this.subArray.add(sub.onClose.subscribe(repairType => repairType && this.repairSubmit(repairType)));
 
-    this.currentTire = tire;
-    this.typesDialogOpen = true;
-  }
-  removeRepairType(tire: Tire, workEvent: WorkEvent) {
-    this.removeWorkEvent(workEvent);
-  }
 
-  isNewTireType(workEvent: WorkEvent) {
-    if (workEvent.repairType.code == 5) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
   switch(bol: boolean): boolean {
     if (bol) {
       return false;
@@ -215,21 +152,9 @@ export class ReportInputComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  // open() {
-  //   this.dialogService.open(ShowcaseDialogComponent, {
-  //     context: {
-  //       title: 'This is a title passed to the dialog component',
-  //     },
-  //   });
-  // }
 
-  generateWorkEvents() {
-    let events = new Array<WorkEvent>();
-    events.push(this.generateWorkEvent());
-    events.push(this.generateWorkEvent());
-    events.push(this.generateWorkEvent());
-    return events;
-  }
+
+
   stageComplete(stageNum) {
     if (stageNum == 1) {
       return this.stage1form.valid;
@@ -237,12 +162,7 @@ export class ReportInputComponent implements OnInit, OnDestroy {
       return this.stage2form.valid;
     }
   }
-  generateWorkEvent(): WorkEvent {
-    let event = new WorkEvent();
-    // event.Id ="4444";
-    event.workDescription = "תיקון תקר";
-    return event;
-  }
+
   getWorkEvents(tire: Tire) {
     let events = new Array<WorkEvent>();
     this.report.workEvents.forEach(event => {
@@ -271,8 +191,8 @@ export class ReportInputComponent implements OnInit, OnDestroy {
     this.printReport();
   }
   loadDriverData() {
-    this.report.user.firstName = this.stage2form.get('fullName').value;
-    this.report.user.phoneNum = this.stage2form.get('phoneNum').value;
+    this.report.user.firstName = this.stage1form.get('fullName').value;
+    this.report.user.phoneNum = this.stage1form.get('phoneNum').value;
   }
   printReport() {
     console.log("report: ", this.report);
@@ -301,7 +221,7 @@ export class ReportInputComponent implements OnInit, OnDestroy {
     this.setCurrentTireByLocation(currentTire.location - 1);
   }
   tireSubmit(tire: Tire) {
-    this.loadViewToTire(tire);
+    // this.loadViewToTire(tire);
     this.setCurrentTireByLocation(tire.location + 1);
   }
 
@@ -310,24 +230,19 @@ export class ReportInputComponent implements OnInit, OnDestroy {
 
     this.currentRepairType = null;
   }
-  resetTirePage(){
-    this.stage3form.reset();
-    this.myTireBrandsOptions = [];
-  }
+
   setCurrentTireByLocation(location) {
     let tires = this.getTires();
     tires.forEach(tire => {
       if (tire.location == location) {
         this.setCurrentTire(tire);
-        this.loadTireToView(this.currentTire);
+        // this.loadTireToView(this.currentTire);
       }
     });
   }
-//   handleFileInput(files: FileList) {
-//     this.fileToUpload = files.item(0);
-// }
+
   test(){
-    console.log("value: ",this.stage3form.get('image').value);
+    // console.log("value: ",this.stage3form.get('image').value);
   }
   setCurrentTire(tire: Tire) {
     this.currentTire = tire;
@@ -347,17 +262,7 @@ export class ReportInputComponent implements OnInit, OnDestroy {
   postImageCB(picId){
     console.log("picId: ",picId);
   }
-  repairSubmit(type) {
 
-    this.stage3form.get('repairType').setValue(type.type);
-
-    // this.currentRepairType = type;
-    if (this.currentTire != null) {
-
-      this.newWorkEvent(type);
-    }
-    this.typesDialogOpen = false;
-  }
   newWorkEvent(type: RepairType) {
     let work = new WorkEvent();
     work.location = this.currentTire.location;
@@ -369,20 +274,8 @@ export class ReportInputComponent implements OnInit, OnDestroy {
     }
     this.report.workEvents.push(work);
   }
-  removeWorkEvent(workEvent: WorkEvent) {
-    this.removeFromArray(this.report.workEvents, workEvent);
-  }
-  removeFromArray(arr: Array<any>, element) {
-    let index: number = arr.indexOf(element);
-    let deletedElement = null;
-    if (index !== -1) {
-      deletedElement = arr.splice(index, 1);
-    }
-    if (deletedElement != null) {
-      return true;
-    }
-    return false;
-  }
+
+
 
   getStatus(stage, formControlName) {
     let formGroup: FormGroup = this.getFormGroupByStage(stage);
@@ -397,6 +290,97 @@ export class ReportInputComponent implements OnInit, OnDestroy {
     }
     return "danger";
   }
+
+
+  getFormGroupByStage(stage) {
+    if (stage == 1) {
+      return this.stage1form;
+    } else if (stage === 2) {
+      return this.stage2form;
+    }
+  }
+  tireHeadLine(tire) {
+    return "צמיג " + Strings.tireLocations[tire.location - 1];
+  }
+  stage1complete() {
+    let plateNum = this.stage1form.get('carNum').value;
+    let km = this.stage1form.get('km').value;
+    let tireSize = this.stage1form.get('tireSize').value + " " + this.stage1form.get('speedCode').value;
+    this.setVehicleData(plateNum, km, tireSize); //to it only in the end
+    this.printReport();
+  }
+
+  setDriverData(fullName: any, phoneNum: any) {
+    this.report.user.firstName = fullName;
+    this.report.user.phoneNum = phoneNum;
+  }
+  setVehicleData(plateNum: any, km: number, tireSize: string) {
+    this.report.vehicle.plateNum = plateNum;
+    this.report.vehicle.km = +km;
+    this.report.vehicle.tireSize = tireSize;
+  }
+
+  setSubscribers() {
+    this.stage1form.valueChanges.subscribe(val => {
+
+      if (typeof val.km === 'string') {
+        const maskedVal = this.currencyMask.transform(val.km);
+        if (val.km !== maskedVal) {
+          this.stage1form.patchValue({ amount: maskedVal });
+        }
+      }
+    });
+
+  }
+
+  formDataInsert(stage) {
+    if (stage == 1) {
+      let vehicle: Vehicle = this.generateVehicle();
+      this.stage1form.get('carNum').setValue(vehicle.plateNum);
+      this.stage1form.get('km').setValue(vehicle.km);
+      this.stage1form.get('tireSize').setValue(vehicle.tireSize);
+      this.stage1form.get('speedCode').setValue("92V");
+      this.stage1form.get('fullName').setValue("someone");
+      this.stage1form.get('phoneNum').setValue("051511111");
+
+    }
+
+  }
+
+
+  generateVehicle() {
+    let vehicle = new Vehicle();
+    // vehicle.Id="4444";
+    vehicle.plateNum = "1111111";
+    vehicle.km = 15000;
+    vehicle.tireSize = "175/65R14";
+
+    vehicle.tires = new Array<Tire>();
+    vehicle.tires.push(this.generateTire());
+    vehicle.tires.push(this.generateTire());
+    vehicle.tires.push(this.generateTire());
+    vehicle.tires.push(this.generateTire());
+    vehicle.tires.push(this.generateTire());
+    return vehicle;
+  }
+// loadTireToView(tire: Tire) {
+  //   this.stage3form.reset();
+  //   this.stage3form.get('manufacture').setValue(tire.manufacture);
+  //   this.stage3form.get('speedCode').setValue(tire.speedCode);
+  //   // this.stage3form.get('omesCode').setValue(tire.omesCode);
+  // }
+  // loadViewToTire(tire) {
+  //   tire.manufacture = this.stage3form.get('manufacture').value;
+  //   tire.speedCode = this.stage3form.get('speedCode').value;
+  //   // tire.omesCode = this.stage3form.get('omesCode').value;
+  // }
+
+
+  stage2complete() {
+    this.printReport();
+    this.reportState = 2;
+  }
+
 
   // getTireSizeFromControl(){
   //   let fcVal=this.stage1form.get('tireSize').value;
@@ -439,91 +423,4 @@ export class ReportInputComponent implements OnInit, OnDestroy {
 
   //   return start+middle+end;
   // }
-  getFormGroupByStage(stage) {
-    if (stage == 1) {
-      return this.stage1form;
-    } else if (stage === 2) {
-      return this.stage2form;
-    } else if (stage === 3) {
-      return this.stage3form;
-    }
-  }
-  tireHeadLine(tire) {
-    return "צמיג " + Strings.tireLocations[tire.location - 1];
-  }
-  stage1complete() {
-    let plateNum = this.stage1form.get('carNum').value;
-    let km = this.stage1form.get('km').value;
-    let tireSize = this.stage1form.get('tireSize').value + " " + this.stage1form.get('speedCode').value;
-    this.setVehicleData(plateNum, km, tireSize); //to it only in the end
-    this.printReport();
-  }
-  stage2complete() {
-    let fullName = this.stage2form.get('fullName').value;
-    let phoneNum = this.stage2form.get('phoneNum').value;
-    this.setDriverData(fullName, phoneNum); //to it only in the end
-    this.printReport();
-    this.reportState = 2;
-  }
-  setDriverData(fullName: any, phoneNum: any) {
-    this.report.user.firstName = fullName;
-    this.report.user.phoneNum = phoneNum;
-  }
-  setVehicleData(plateNum: any, km: number, tireSize: string) {
-    this.report.vehicle.plateNum = plateNum;
-    this.report.vehicle.km = +km;
-    this.report.vehicle.tireSize = tireSize;
-  }
-
-  setSubscribers() {
-    this.stage1form.valueChanges.subscribe(val => {
-
-      if (typeof val.km === 'string') {
-        const maskedVal = this.currencyMask.transform(val.km);
-        if (val.km !== maskedVal) {
-          this.stage1form.patchValue({ amount: maskedVal });
-        }
-      }
-    });
-
-  }
-
-
-
-
-
-
-  formDataInsert(stage) {
-    if (stage == 1) {
-      let vehicle: Vehicle = this.generateVehicle();
-      this.stage1form.get('carNum').setValue(vehicle.plateNum);
-      this.stage1form.get('km').setValue(vehicle.km);
-      this.stage1form.get('tireSize').setValue(vehicle.tireSize);
-      this.stage1form.get('speedCode').setValue("92V");
-
-    }
-    if (stage == 2) {
-      this.stage2form.get('fullName').setValue("מישהו");
-      this.stage2form.get('phoneNum').setValue("051511111");
-    }
-  }
-
-
-  generateVehicle() {
-    let vehicle = new Vehicle();
-    // vehicle.Id="4444";
-    vehicle.plateNum = "1111111";
-    vehicle.km = 15000;
-    vehicle.tireSize = "175/65R14";
-
-    vehicle.tires = new Array<Tire>();
-    vehicle.tires.push(this.generateTire());
-    vehicle.tires.push(this.generateTire());
-    vehicle.tires.push(this.generateTire());
-    vehicle.tires.push(this.generateTire());
-    vehicle.tires.push(this.generateTire());
-    return vehicle;
-  }
-
-
 }

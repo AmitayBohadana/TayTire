@@ -9,6 +9,7 @@ import { NbDialogService } from '@nebular/theme';
 import { RepairChoiseModalComponent } from '../../modal-overlays/repair-choise-modal/repair-choise-modal.component';
 import { RepairTypesService } from '../../../services/repair-types.service';
 import { RepairType } from '../../../model/repairType';
+import { WorkEvent } from '../../../model/workEvent';
 
 @Component({
   selector: 'ngx-tire-form',
@@ -29,6 +30,19 @@ export class TireFormComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subArray.add(this.fg.get('manufacture').valueChanges.subscribe(
+      term => {
+        console.log("value changedL ",term);
+
+        if(term){
+          this.tireService.search(term).subscribe(
+            data => {
+
+              this.myTireBrandsOptions = data as any[];
+              this.filteredControlOptions$ = of(this.myTireBrandsOptions);
+          })
+        }
+    }))
   }
 
   createFormGroup(){
@@ -75,6 +89,12 @@ export class TireFormComponent extends BaseComponent implements OnInit {
   getRepairTypes() {
     return this.repairTypesService.GetRepairTypes();
   }
+  loadTireToView(tire: Tire) {
+    this.fg.reset();
+    this.fg.get('manufacture').setValue(tire.manufacture);
+    this.fg.get('speedCode').setValue(tire.speedCode);
+    // this.stage3form.get('omesCode').setValue(tire.omesCode);
+  }
   repairSubmit(type) {
 
     this.fg.get('repairType').setValue(type.type);
@@ -88,7 +108,25 @@ export class TireFormComponent extends BaseComponent implements OnInit {
   }
   newWorkEvent(type: RepairType) {
     let work = this.tireService.createWorkEvent(type,this.tire.location,"michlin");
-    this.report.workEvents.push(work);
+    // this.report.workEvents.push(work);
+  }
+  getWorkEvents(){
+
+  }
+  removeRepairType(work:WorkEvent){
+    this.removeWorkEvent(work);
+  }
+
+  removeWorkEvent(workEvent: WorkEvent) {
+    // this.tireService.removeFromArray(this.report.workEvents, workEvent);
+  }
+  isNewTireType(workEvent){
+    if (workEvent.repairType.code == 5) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   public addFile(element) {
