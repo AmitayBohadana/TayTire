@@ -15,7 +15,6 @@ import { RepairType } from '../../../model/repairType';
 import { tireSizeValidator } from '../../../validators/tireSize.validator';
 import { Strings } from '../../../strings';
 import { ToNumberPipe } from '../../../@theme/pipes/toNumber.pipe';
-import { ShowcaseDialogComponent } from '../../modal-overlays/dialog/showcase-dialog/showcase-dialog.component';
 import { RepairChoiseModalComponent } from '../../modal-overlays/repair-choise-modal/repair-choise-modal.component';
 import { Subscription, Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';

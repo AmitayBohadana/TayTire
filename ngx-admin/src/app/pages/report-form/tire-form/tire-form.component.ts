@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { TireService } from '../../../services/tire.service';
 import { BaseComponent } from '../../base/base.component';
-import { DialogComponent } from '../../modal-overlays/dialog/dialog.component';
+
 import { NbDialogService } from '@nebular/theme';
 import { RepairChoiseModalComponent } from '../../modal-overlays/repair-choise-modal/repair-choise-modal.component';
 import { RepairTypesService } from '../../../services/repair-types.service';

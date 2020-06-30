@@ -20,9 +20,6 @@ import { ModalOverlaysRoutingModule } from './modal-overlays-routing.module';
 
 // components
 import { ModalOverlaysComponent } from './modal-overlays.component';
-import { DialogComponent } from './dialog/dialog.component';
-import { ShowcaseDialogComponent } from './dialog/showcase-dialog/showcase-dialog.component';
-import { DialogNamePromptComponent } from './dialog/dialog-name-prompt/dialog-name-prompt.component';
 import { WindowComponent } from './window/window.component';
 import { WindowFormComponent } from './window/window-form/window-form.component';
 import { ToastrComponent } from './toastr/toastr.component';
@@ -39,10 +36,7 @@ import { RepairChoiseModalComponent } from './repair-choise-modal/repair-choise-
 const COMPONENTS = [
   ModalOverlaysComponent,
   ToastrComponent,
-  DialogComponent,
-  ShowcaseDialogComponent,
   RepairChoiseModalComponent,
-  DialogNamePromptComponent,
   WindowComponent,
   WindowFormComponent,
   PopoversComponent,
@@ -53,9 +47,7 @@ const COMPONENTS = [
 ];
 
 const ENTRY_COMPONENTS = [
-  ShowcaseDialogComponent,
   RepairChoiseModalComponent,
-  DialogNamePromptComponent,
   WindowFormComponent,
   NgxPopoverCardComponent,
   NgxPopoverFormComponent,
