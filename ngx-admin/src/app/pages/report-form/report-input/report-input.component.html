@@ -1,10 +1,9 @@
 <nb-card *ngIf="this.reportState == 1" class="col-md-12 col-lg-12 col-xxxl-12 direction">
   <nb-card-body>
-    <!-- <nb-stepper orientation="horizontal">
-      <nb-step [label]="labelOne"> -->
+
     <ng-template #labelOne>שלב 1</ng-template>
     <h3 (click)="formDataInsert(1)">פרטי רכב</h3>
-    <form [formGroup]="this.stage1form" [nbSpinner]="loading" nbSpinnerStatus="success" nbSpinnerSize="giant">
+    <form [formGroup]="this.fg" [nbSpinner]="loading" nbSpinnerStatus="success" nbSpinnerSize="giant">
       <div class="form-group row">
         <label for="inputEmail1" class="label col-sm-3 col-form-label">מספר רכב</label>
         <div class="col-sm-9">
@@ -20,7 +19,7 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="inputPassword2" class="label col-sm-3 col-form-label">מידת צמיג</label>
+        <label for="inputPassword2" class="label col-sm-3 col-form-label">מידת צמיג: {{getTireSizeFromInput()}}</label>
         <div class="col-sm-9">
           <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="מידת צמיג"
             formControlName="tireSize" [status]="getStatus(1,'tireSize')">
@@ -50,17 +49,8 @@
             formControlName="phoneNum">
         </div>
       </div>
-
     </form>
 
-    <!-- <button [disabled]="!stageComplete(1)" (click)="stage1complete()" nbButton nbStepperNext>הבא</button>
-
-        <button nbButton nbStepperPrevious>הקודם</button>
-
-        <button [disabled]="!stageComplete(2)" nbButton nbStepperNext (click)="stage2complete()">הבא</button> -->
-
-
-    <!-- <button [disabled]="!stageComplete(2)" nbButton  (click)="stage2complete()">הבא</button> -->
   </nb-card-body>
 </nb-card>
 
@@ -73,72 +63,6 @@
           <ng-template #labelOne></ng-template>
           <h3>{{tireHeadLine(tire)}}</h3>
           <ngx-tire-form [tire]=tire></ngx-tire-form>
-          <!-- <form [formGroup]="this.stage3form">
-
-            <div class="form-group row direction">
-              <label class="label col-sm-3 col-form-label">יצרן</label>
-              <div class="col-sm-9">
-
-
-                <input formControlName="manufacture" nbInput type="text" shape="semi-round" status="info"
-                  placeholder="יצרן" [status]="getStatus(3,'manufacture')" [nbAutocomplete]="autoControl" />
-
-                <nb-autocomplete #autoControl>
-
-                  <nb-option *ngFor="let option of filteredControlOptions$ | async" [value]="option">
-                    {{ option }}
-                  </nb-option>
-
-                </nb-autocomplete>
-              </div>
-            </div>
-            <button (click)="test()">test</button>
-            <div class="form-group row direction">
-              <label class="label col-sm-3 col-form-label">תמונה</label>
-              <div class="col-sm-9">
-
-                <input type="file" accept="image/*" formControlName="image" (change)="addFile($event,tire)"
-                  capture="environment">
-              </div>
-
-
-            </div>
-            <div class="form-group row direction">
-              <label class="label col-sm-3 col-form-label">בחר תקלה</label>
-
-
-              <nb-actions size="medium">
-                <nb-action title="מתוך רשימה" icon="menu-outline" (click)="openRepairTypesDialog(tire)"></nb-action>
-                <nb-action icon="search-outline"></nb-action>
-
-                <nb-action icon="settings-2-outline"></nb-action>
-              </nb-actions>
-
-            </div>
-            <div class="form-group row direction">
-              <label class="label col-sm-3 col-form-label">רשימת תקלות:</label>
-              <nb-list>
-                <nb-list-item *ngFor="let workEvent of getWorkEvents(tire)">
-                  <div class="row">
-                    <div class="col-10">
-                      {{workEvent.repairType.type}}
-                    </div>
-                    <div class="col-2">
-                      <nb-icon (click)="removeRepairType(tire,workEvent)" icon="trash"></nb-icon>
-                    </div>
-                  </div>
-                  <div *ngIf="isNewTireType(workEvent)" class="row">
-                    <div class="col-10">
-                      במלאי: {{workEvent.item}}
-                    </div>
-                    <div class="col-2">
-                      <nb-icon (click)="removeRepairType(tire,workEvent)" icon="edit"></nb-icon>
-                    </div>
-                  </div>
-                </nb-list-item>
-              </nb-list>
-            </div>
-          </form> -->
           <button [disabled]="i ==0" nbButton nbStepperPrevious (click)="prevTire(tire)">הקודם</button>
           <button nbButton nbStepperNext (click)="tireSubmit(tire)">הבא</button>
         </nb-step>
@@ -149,23 +73,10 @@
 
 
 
-
-<!--
-<nb-card *ngIf="this.typesDialogOpen" class="direction">
-  <nb-card-header>בחר תקלה</nb-card-header>
-
-  <nb-list>
-    <nb-list-item *ngFor="let type of getRepairTypes()" (click)="repairSubmit(type)">
-      {{type.code}} - {{type.type}}
-    </nb-list-item>
-  </nb-list>
-
-</nb-card> -->
-
 <div class="form-group row">
 
   <div class="offset-sm-3 col-sm-9">
-    <button [disabled]="!stageComplete(1)" (click)="stage2complete()" nbButton status="primary">הבא</button>
+    <button [disabled]="!isStageComplete()" (click)="submitOnClick()" nbButton status="primary">הבא</button>
     <button nbButton>הקודם</button>
   </div>
 </div>

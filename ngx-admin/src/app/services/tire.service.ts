@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { debounceTime, map } from 'rxjs/operators';
 import { RepairType } from '../model/repairType';
 import { WorkEvent } from '../model/workEvent';
+import { Tire } from '../model/tire';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -74,5 +75,17 @@ export class TireService {
     }
     return false;
   }
+
+
+
+
+  generateTire() {
+    let tire = new Tire();
+    tire.manufacture = "michlin";
+    tire.speedCode = "V";
+    tire.tireSize = "175/65/15";
+    return tire;
+  }
+
 
 }

@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'report-form',
-  template: `
-    <router-outlet></router-outlet>
-  `,
+  templateUrl: './report-form.component.html',
 })
 export class ReportFormComponent {
 }
