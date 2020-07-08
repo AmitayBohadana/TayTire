@@ -1,0 +1,42 @@
+
+    <nb-card>
+      <nb-card-header>צמיג להרכבה?</nb-card-header>
+      <nb-card-body>
+
+    <br>
+    <h3 class="h5">מה יש לך במלאי?</h3>
+
+    <form [formGroup]="this.fg">
+
+      <div class="form-group row direction">
+        <label class="label col-sm-3 col-form-label">יצרן</label>
+        <div class="col-sm-9">
+
+
+          <input formControlName="manufacture" nbInput type="text" shape="semi-round" status="info"
+            placeholder="יצרן" [status]="getStatus('manufacture')" [nbAutocomplete]="autoControl" />
+
+          <nb-autocomplete #autoControl>
+
+            <nb-option *ngFor="let option of filteredControlOptions$ | async" [value]="option">
+              {{ option }}
+            </nb-option>
+
+          </nb-autocomplete>
+        </div>
+      </div>
+      </form>
+
+      <nb-radio-group [(ngModel)]="option">
+        <nb-radio
+          *ngFor="let option of options"
+          [value]="option.value">
+          {{ option.label }}
+        </nb-radio>
+      </nb-radio-group>
+
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="primary" (click)="submit()">אישור</button>
+      </nb-card-footer>
+    </nb-card>

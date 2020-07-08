@@ -10,6 +10,8 @@ import { RepairChoiseModalComponent } from '../../modal-overlays/repair-choise-m
 import { RepairTypesService } from '../../../services/repair-types.service';
 import { RepairType } from '../../../model/repairType';
 import { WorkEvent } from '../../../model/workEvent';
+import { ReportInputService } from '../../../services/report-input.service';
+import { TireBrandDialogComponent } from '../../modal-overlays/tire-brand-dialog/tire-brand-dialog.component';
 
 @Component({
   selector: 'ngx-tire-form',
@@ -17,14 +19,14 @@ import { WorkEvent } from '../../../model/workEvent';
   styleUrls: ['./tire-form.component.scss']
 })
 export class TireFormComponent extends BaseComponent implements OnInit {
-  @Input() tire:Tire;
+  @Input() tire: Tire;
 
   public fg: FormGroup;
   public typesDialogOpen = false;
   myTireBrandsOptions = <any>[];
   filteredControlOptions$: Observable<string[]>;
 
-  constructor(private tireService:TireService,private dialogService:NbDialogService,private repairTypesService:RepairTypesService) {
+  constructor(private reportInService: ReportInputService, private tireService: TireService, private dialogService: NbDialogService, private repairTypesService: RepairTypesService) {
     super();
     this.createFormGroup();
   }
@@ -32,20 +34,20 @@ export class TireFormComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.subArray.add(this.fg.get('manufacture').valueChanges.subscribe(
       term => {
-        console.log("value changedL ",term);
+        console.log("value changedL ", term);
 
-        if(term){
+        if (term) {
           this.tireService.search(term).subscribe(
             data => {
 
               this.myTireBrandsOptions = data as any[];
               this.filteredControlOptions$ = of(this.myTireBrandsOptions);
-          })
+            })
         }
-    }))
+      }))
   }
 
-  createFormGroup(){
+  createFormGroup() {
     this.fg = new FormGroup({
       manufacture: new FormControl('', [Validators.required]),
       speedCode: new FormControl('', [Validators.required]),
@@ -53,26 +55,26 @@ export class TireFormComponent extends BaseComponent implements OnInit {
       image: new FormControl('', [Validators.required])
     });
   }
-  getStatus(formControlName){
+  getStatus(formControlName) {
     if (this.fg.get(formControlName).valid) {
       return "info";
     }
     return "danger";
   }
-  setManufactureOptionsSubs(){
+  setManufactureOptionsSubs() {
     this.subArray.add(this.fg.get('manufacture').valueChanges.subscribe(
       term => {
-        console.log("value changedL ",term);
+        console.log("value changedL ", term);
 
-        if(term){
+        if (term) {
           this.tireService.search(term).subscribe(
             data => {
 
               this.myTireBrandsOptions = data as any[];
               this.filteredControlOptions$ = of(this.myTireBrandsOptions);
-          })
+            })
         }
-    }))
+      }))
 
   }
   openRepairTypesDialog() {
@@ -96,37 +98,60 @@ export class TireFormComponent extends BaseComponent implements OnInit {
     // this.stage3form.get('omesCode').setValue(tire.omesCode);
   }
   repairSubmit(type) {
-
     this.fg.get('repairType').setValue(type.type);
-
     // this.currentRepairType = type;
     if (this.tire != null) {
-
       this.newWorkEvent(type);
     }
     this.typesDialogOpen = false;
   }
   newWorkEvent(type: RepairType) {
-    let work = this.tireService.createWorkEvent(type,this.tire.location,"michlin");
+    if(this.isNewTire(type)){
+      this.openNewTireWorkEventModal();
+    }
+    let work = this.tireService.createWorkEvent(type, this.tire.location, "michlin");
+    this.reportInService.report.workEvents.push(work);
     // this.report.workEvents.push(work);
   }
-  getWorkEvents(){
-
+  openNewTireWorkEventModal() {
+    let sub = this.dialogService.open(TireBrandDialogComponent, {
+      context: {
+      },
+    });
+    this.subArray.add(sub.onClose.subscribe(repairType => repairType && this.repairSubmit(repairType)));
   }
-  removeRepairType(work:WorkEvent){
+  isNewTire(type: RepairType) {
+    let retVal = false;
+    if (type.code == 5) {
+      retVal = true;
+    }
+    return retVal;
+  }
+  getWorkEvents() {
+    return this.reportInService.getWorkEventsByTire(this.tire);
+  }
+  removeRepairType(work: WorkEvent) {
     this.removeWorkEvent(work);
   }
 
   removeWorkEvent(workEvent: WorkEvent) {
-    // this.tireService.removeFromArray(this.report.workEvents, workEvent);
+    this.reportInService.removeWorkEvent(workEvent);
   }
-  isNewTireType(workEvent){
+  isNewTireType(workEvent) {
     if (workEvent.repairType.code == 5) {
       return true;
     }
     else {
       return false;
     }
+  }
+
+  hasWorkEvents() {
+    let works: Array<WorkEvent> = this.getWorkEvents();
+    if (works.length == 0) {
+      return "אין";
+    }
+    return "";
   }
 
   public addFile(element) {
@@ -139,10 +164,10 @@ export class TireFormComponent extends BaseComponent implements OnInit {
     // formData.append('location', tire.location.toString());
     // console.log("tire: ",tire);
     // this.restService.postWithFile("api/Image", formData,this.postImageCB.bind(this));
-    }
+  }
 
 
-  test(){
+  test() {
 
   }
 

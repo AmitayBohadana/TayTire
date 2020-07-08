@@ -29,6 +29,7 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
   public loading = false;
   public fg: FormGroup;
   public subArray: Subscription = new Subscription();
+  cuurentTireIdx
 
   myTireBrandsOptions = <any>[];
   filteredControlOptions$: Observable<string[]>;
@@ -84,7 +85,9 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     // this.loading = true;
     this.reportInService.GetNewReportByPlateNum(this.newReportByPlateNumCB.bind(this));
   }
-
+  backOnClick(){
+    this.reportState = 1; //change it
+  }
   newReportByPlateNumCB(res) {
     let reportVm: ReportVM = res;
     this.reportInService.report = reportVm;
@@ -120,15 +123,6 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     return this.fg.valid;
   }
 
-  getWorkEvents(tire: Tire) {
-    let events = new Array<WorkEvent>();
-    this.reportInService.report.workEvents.forEach(event => {
-      if (event.location == tire.location) {
-        events.push(event);
-      }
-    });
-    return events;
-  }
   loadVehicleData() {
     if (this.reportInService.report.vehicle != null) {
       this.reportInService.report.vehicle.plateNum = this.fg.get('carNum').value;
@@ -186,17 +180,7 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     this.currentTire = tire;
 
   }
-  // public addFile(element,tire:Tire) {
-  // const formData = new FormData();
-  // let tirePic = new TirePic();
-  // tire.image = element.target.files.item(0);
 
-  // formData.append('image', tire.image, tire.image.name);
-  // formData.append('manufacture', tire.manufacture);
-  // formData.append('location', tire.location.toString());
-  // console.log("tire: ",tire);
-  // this.restService.postWithFile("api/Image", formData,this.postImageCB.bind(this));
-  // }
   postImageCB(picId){
     console.log("picId: ",picId);
   }
@@ -294,5 +278,8 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     return vehicle;
   }
 
-
+  getCurrentTire(){
+    let tires:Array<Tire> = this.getTires();
+    return tires[this.cuurentTireIdx];
+  }
 }

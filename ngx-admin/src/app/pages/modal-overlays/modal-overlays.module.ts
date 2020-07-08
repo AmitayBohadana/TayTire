@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   NbButtonModule,
   NbCardModule,
@@ -12,6 +12,8 @@ import {
   NbTooltipModule,
   NbWindowModule,
   NbListModule,
+  NbAutocompleteModule,
+  NbRadioModule,
 } from '@nebular/theme';
 
 // modules
@@ -30,6 +32,7 @@ import {
 } from './popovers/popover-examples.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { RepairChoiseModalComponent } from './repair-choise-modal/repair-choise-modal.component';
+import { TireBrandDialogComponent } from './tire-brand-dialog/tire-brand-dialog.component';
 
 
 
@@ -37,6 +40,7 @@ const COMPONENTS = [
   ModalOverlaysComponent,
   ToastrComponent,
   RepairChoiseModalComponent,
+  TireBrandDialogComponent,
   WindowComponent,
   WindowFormComponent,
   PopoversComponent,
@@ -48,6 +52,7 @@ const COMPONENTS = [
 
 const ENTRY_COMPONENTS = [
   RepairChoiseModalComponent,
+  TireBrandDialogComponent,
   WindowFormComponent,
   NgxPopoverCardComponent,
   NgxPopoverFormComponent,
@@ -68,7 +73,10 @@ const MODULES = [
   NbInputModule,
   NbSelectModule,
   NbTooltipModule,
-  NbListModule
+  NbListModule,
+  ReactiveFormsModule,
+  NbAutocompleteModule,
+  NbRadioModule,
 ];
 
 const SERVICES = [
@@ -80,6 +88,7 @@ const SERVICES = [
   ],
   declarations: [
     ...COMPONENTS,
+    TireBrandDialogComponent,
   ],
   providers: [
     ...SERVICES,
