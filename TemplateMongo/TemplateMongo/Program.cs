@@ -25,6 +25,8 @@ namespace TemplateMongo
                     webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
                     webBuilder.UseIISIntegration();
                     webBuilder.UseStartup<Startup>();
+                    //webBuilder.UseUrls("http://localhost:5000", "https://localhost:5001");
+                    webBuilder.UseUrls("http://localhost:5000");
                 });
     }
 }

@@ -1,0 +1,14 @@
+<nb-card>
+  <nb-card-header>בחר תקלה</nb-card-header>
+  <nb-card-body>
+    <nb-list>
+      <nb-list-item *ngFor="let type of getRepairTypes()" (click)="repairSubmit(type)">
+        {{type.code}} - {{type.type}}
+      </nb-list-item>
+    </nb-list>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton hero status="primary" (click)="dismiss()">סגור</button>
+  </nb-card-footer>
+</nb-card>

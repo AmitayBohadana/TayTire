@@ -1,0 +1,27 @@
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 direction">
+  <button (click)="toReportinputPage()" nbButton status="primary">לדיווח חדש</button>
+
+</nb-card>
+
+
+  <h3>ממתינים לאישור:</h3>
+<div *ngIf="this.waitingReports == null" > אין מידע</div>
+<ngx-reports-accordion [reports]="GetWatingReports()"></ngx-reports-accordion>
+<h3>קיבלו אישור:</h3>
+<div *ngIf="this.confirmedReports == null" > אין מידע</div>
+<ngx-reports-accordion [reports]="GetConfirmedReports()"></ngx-reports-accordion>
+
+
+<div [nbSpinner]="loading" class="row">
+  <div class="col-4">
+
+  </div>
+  <div class="col-4">
+    <button (click)="RequestData()" nbButton status="info">רענן
+      <nb-icon icon="refresh"></nb-icon>
+    </button>
+
+  </div>
+  <div class="col-4">
+  </div>
+</div>

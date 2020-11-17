@@ -1,7 +1,10 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.CodeAnalysis;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TemplateMongo.Model;
 
@@ -10,15 +13,16 @@ namespace TemplateMongo.Services
     public class VehicleService
     {
         private readonly IMongoCollection<Vehicle> _vehicle;
-
+  
         public VehicleService(ITayTireDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
             var dbName = settings.DatabaseName;
             _vehicle = database.GetCollection<Vehicle>(settings.VehicleCollectionName);
+     
         }
-
+       
         public List<Vehicle> Get() =>
             _vehicle.Find(vehicle => true).ToList();
 
@@ -30,7 +34,7 @@ namespace TemplateMongo.Services
 
         public Vehicle Create(Vehicle vehicle)
         {
-
+            
             _vehicle.InsertOne(vehicle);
             return vehicle;
         }

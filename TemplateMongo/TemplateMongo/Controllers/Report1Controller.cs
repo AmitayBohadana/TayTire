@@ -20,19 +20,39 @@ namespace TemplateMongo.Controllers
         private readonly ReportBLService _reportBLService;
         private readonly MailMsgService _mailService;
         private readonly RepairTypeService _repairTypeService;
+        private readonly DocsService _docsService;
         public Report1Controller(ReportService reportService,DataService dataService, ReportBLService reportBLService,
-            MailMsgService mailService,RepairTypeService repairTypesService)
+            MailMsgService mailService,RepairTypeService repairTypesService,DocsService docsService)
         {
+            _docsService = docsService;
             _mailService = mailService;
             _reportService = reportService;
             _dataService= dataService;
             _reportBLService = reportBLService;
             _repairTypeService = repairTypesService;
+            
         }
+        [HttpPost]
+        [Route("ReportDoc")]
+        public ActionResult<int[]> ReportDoc(ReportVM report)
+        {
+            string error;
+            
+            try
+            {
+                int[] res = _docsService.CreateTestPdf(report);
+                return res;
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
 
         [HttpGet]
         public ActionResult<List<ReportVM>> Get() =>
-                _reportBLService.GetAllReportVM();
+                _reportBLService.GetAllActiveReportVM();
         
 
 
@@ -49,16 +69,18 @@ namespace TemplateMongo.Controllers
 
             return report;
         }
-      
+                      
+
+
         [HttpPost]
-        [Route("GetNewReportByPlateNum")]
-        public ActionResult<ReportVM> GetNewReportByPlateNum(ReportVM reportVm)
+        [Route("GetVehicleByPlateNum")]
+        public ActionResult<Vehicle> GetVehicleByPlateNum(Vehicle vehicle)
         {
-            ReportVM retVal = _reportBLService.GetNewReportByPlateNum(reportVm);
-            if (retVal == null)
-            {
-                return NotFound();
-            }
+            Vehicle retVal = _reportBLService.GetVehicleByPlateNum(vehicle);
+            //if (retVal == null)
+            //{
+            //    return NotFound();
+            //}
 
             return retVal;
         }
@@ -66,21 +88,29 @@ namespace TemplateMongo.Controllers
         [HttpPost]
         public ActionResult<ReportVM> Create(ReportVM reportVm)
         {
-            _reportBLService.Create(reportVm);
+            ReportVM res = _reportBLService.Create(reportVm);
 
 
-            return CreatedAtRoute("GetBook", new { id = reportVm.Id.ToString() }, reportVm);
+            return res;
         }
 
         [HttpPost]
         [Route("CancelReport")]
-        public ActionResult<ReportVM> CancelReport(ReportVM reportVm)
+        public ActionResult<string> CancelReport(ReportVM reportVm)
         {
-            _reportBLService.CancelReport(reportVm);
+            string res =  _reportBLService.CancelReport(reportVm);
 
-
-            return CreatedAtRoute("GetBook", new { id = reportVm.Id.ToString() }, reportVm);
+            return res;
         }
+        [HttpPost]
+        [Route("ReportDone")]
+        public ActionResult<string> ReportDone(ReportVM reportVm)
+        {
+            string res = _reportBLService.ReportDone(reportVm);
+
+            return res;
+        }
+
 
         [HttpPost]
         [Route("ChangeReportStatus")]

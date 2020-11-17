@@ -13,12 +13,12 @@ namespace TemplateMongo.Controllers
     [ApiController]
     public class ReportsController : Controller
     {
-        BaseDocumentService _documentService;
         DocsService _docsService;
-
-        public ReportsController(BaseDocumentService documentService,DocsService docsService)
+        ReportBLService _reportBLService;
+        public ReportsController(ReportBLService reportBLService,DocsService docsService)
         {
-            _documentService = documentService;
+            _reportBLService = reportBLService; 
+
             _docsService = docsService;
         }
 
@@ -34,9 +34,18 @@ namespace TemplateMongo.Controllers
         }
         [HttpPost]
         [Route("ReportDoc")]
-        public ActionResult<int[]> ReportDoc(ReportVM report)
+        public ActionResult<int[]> ReportDoc(ReportVM reportIn)
         {
-            return _docsService.CreatePdf(report);
+            try
+            {
+                ReportVM report = _reportBLService.GetReportVM(reportIn.Id.ToString());
+                int[] res = _docsService.CreatePdf(reportIn);
+                return res;
+            }
+            catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }          
         }
         public IActionResult Index()
         {

@@ -2,12 +2,17 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Microsoft.AspNetCore.Http;
-
+using TemplateMongo.Services;
 
 namespace TemplateMongo.Model
 {
     public class Tire
     {
+
+        public Tire()
+        {
+
+        }
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }

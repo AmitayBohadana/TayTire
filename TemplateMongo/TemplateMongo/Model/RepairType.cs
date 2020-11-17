@@ -17,6 +17,8 @@ namespace TemplateMongo.Model
         [BsonElement("code")]
         public int code { get; set; }
         public string type { get; set; }
+        public string item { get; set; }
+        public bool damaged { get; set; }
         
     }
 }

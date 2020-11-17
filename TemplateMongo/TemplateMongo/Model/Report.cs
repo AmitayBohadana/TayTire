@@ -28,7 +28,5 @@ namespace TemplateMongo.Model
         public string vehicle_plate_num { get; set; }
         public string status { get; set; }
 
-
-
     }
 }

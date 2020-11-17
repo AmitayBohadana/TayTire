@@ -1,0 +1,61 @@
+
+
+  <!-- <nb-card-header> -->
+
+  <!-- </nb-card-header> -->
+  <!-- <nb-card-body> -->
+
+  <div class="row">
+    <div class="col-2">
+      <span (click)="setTireLocation(4)" class="dot" [ngClass]="{'selectedTire': this.getSelectedLocation() == 4}"></span>
+      <!-- <nb-icon icon="star" (click)="setTireLocation(4)" pack="font-awesome"></nb-icon> -->
+    </div>
+    <div class="col-8"></div>
+    <div class="col-2">
+      <span (click)="setTireLocation(1)" class="dot" [ngClass]="{'selectedTire': this.getSelectedLocation() == 1}"></span>
+    </div>
+  </div>
+  <h3>{{tireHeadLine(GetCurrentTire())}}</h3>
+    <ngx-tire-form [tire]=GetCurrentTire()></ngx-tire-form>
+
+    <div class="row" >
+      <div class="col-sm-12" style="text-align: center;">
+        <button nbButton (click)="prevTire()" style="margin:3%">צמיג קודם</button>
+      <button nbButton (click)="tireSubmit()" style="margin:3%">{{getNextButtomName()}}</button>
+      </div>
+    </div>
+    <div class="row mt-2" >
+    <div class="col-2">
+      <span (click)="setTireLocation(3)" class="dot" [ngClass]="{'selectedTire': this.getSelectedLocation() == 3}"></span>
+    </div>
+    <div class="col-8"></div>
+    <div class="col-2">
+      <span (click)="setTireLocation(2)" class="dot" [ngClass]="{'selectedTire': this.getSelectedLocation() == 2}"></span>
+    </div>
+  </div>
+
+    <div class="row" >
+      <div class="col-5">
+      </div>
+      <div class="col-2">
+        <span (click)="setTireLocation(5)" class="dot" [ngClass]="{'selectedTire': this.getSelectedLocation() == 5}"></span>
+      </div>
+      <div class="col-5">
+      </div>
+    </div>
+  <!-- </nb-card-body> -->
+
+
+
+
+
+
+  <!-- <div class="row" style="width: 100%;">
+    <div class="col-5">
+    </div>
+    <div class="col-2">
+      <span (click)="setTireLocation(5)" class="dot" [ngClass]="{'selectedTire': this.getSelectedLocation() == 5}"></span>
+    </div>
+    <div class="col-5">
+    </div>
+  </div> -->

@@ -1,0 +1,76 @@
+
+<form [formGroup]="this.fg">
+
+  <div class="form-group row direction">
+    <label class="label col-sm-3 col-form-label">יצרן</label>
+    <div class="col-sm-9">
+      <!-- <input #autoInput
+      nbInput
+      type="text"
+      (input)="onChange()"
+      placeholder="Enter value"
+      [nbAutocomplete]="autoControl" />
+
+      <nb-autocomplete #autoControl (selectedChange)="onSelectionChange($event)">
+
+        <nb-option *ngFor="let option of filteredControlOptions$ | async" [value]="option">
+          {{ option }}
+        </nb-option>
+      </nb-autocomplete> -->
+      <input #autoInput (input)="onChange2()"  nbInput type="text"
+        placeholder="יצרן" [nbAutocomplete]="autoControl" />
+
+      <!-- <input  formControlName="manufacture" nbInput type="text" shape="semi-round" status="info"
+        placeholder="יצרן" [status]="getStatus('manufacture')" [nbAutocomplete]="autoControl" /> -->
+
+      <nb-autocomplete #autoControl>
+
+        <nb-option *ngFor="let option of filteredControlOptions$ | async" [value]="option">
+          {{ option }}
+        </nb-option>
+
+      </nb-autocomplete>
+    </div>
+  </div>
+  <!-- <div class="form-group row direction">
+    <label class="label col-sm-3 col-form-label">תמונה</label>
+    <div class="col-sm-9">
+      <input type="file" accept="image/*" formControlName="image" (ngModelChange)="addFile($event)"
+        capture="environment">
+    </div>
+  </div> -->
+  <div class="form-group row direction">
+    <label class="label col-sm-3 col-form-label">בחר תקלה</label>
+
+    <nb-actions size="medium">
+
+      <nb-action title="מתוך רשימה" icon="menu-outline" (click)="openRepairTypesDialog()"></nb-action>
+    </nb-actions>
+    <!-- <button>תיקון תקר</button> -->
+
+  </div>
+  <div class="form-group row direction">
+    <label class="label col-sm-3 col-form-label">רשימת תקלות: {{hasWorkEvents()}}</label>
+    <nb-list>
+      <nb-list-item *ngFor="let workEvent of getWorkEventsDistinct()">
+        <div class="row">
+
+          <div class="col-10">
+            {{workEventToDisplay(workEvent)}}
+          </div>
+          <div class="col-2">
+            <nb-icon (click)="removeRepairType(workEvent)" icon="trash"></nb-icon>
+          </div>
+        </div>
+        <div *ngIf="isNewTireType(workEvent.repairType)" class="row">
+          <div class="col-10">
+            במלאי: {{workEvent.repairType.item}}
+          </div>
+          <div class="col-2">
+            <!-- <nb-icon (click)="removeRepairType(tire,workEvent)" icon="edit"></nb-icon> -->
+          </div>
+        </div>
+      </nb-list-item>
+    </nb-list>
+  </div>
+</form>

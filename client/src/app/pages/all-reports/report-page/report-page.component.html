@@ -1,0 +1,59 @@
+
+<div class="accordions-container row direction " style="margin-bottom: 50%;">
+  <div class="accordion-container col-md-12 col-lg-12 col-xxxl-12">
+    <nb-accordion >
+      <nb-accordion-item #item *ngFor="let report of reports">
+        <nb-accordion-item-header [ngClass]="{'confirmedItem':isConfirmed(report)}">
+          <div class="col-6">
+            <label style="text-align: center;">{{getReportHeader(report)}}</label>
+          </div>
+
+          <div class="col-6">
+            <button nbButton status="info" (click)="this.printReport(report)" (click)="stopPropagation($event)">
+              הורדה
+              <nb-icon icon="download"></nb-icon>
+            </button>
+            <button nbButton status="danger" (click)="removeItem(report)" (click)="stopPropagation($event)">
+              מחיקה
+              <nb-icon icon="trash"></nb-icon>
+            </button>
+            <button [disabled]="!isConfirmed(report)" nbButton status="success" (click)="SetReportDone(report)" (click)="stopPropagation($event)">
+              בוצע
+              <nb-icon icon="trash"></nb-icon>
+            </button>
+
+          </div>
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          <ngx-report-view [report]=report></ngx-report-view>
+          <div class="row" >
+            <form [formGroup]="this.reportFG">
+            <div class="col-sm-12">
+              <input type="text" nbInput fullWidth shape="semi-round" formControlName="confirmationNum" status="info" placeholder="מספר אישור">
+            </div>
+          </form>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2 buttonsGroup">
+            </div>
+            <div class="col-sm-3 buttonsGroup">
+              <button nbButton (click)="setConfirmation(report)" status="success">מאושר</button>
+            </div>
+            <div class="col-sm-2 buttonsGroup">
+            </div>
+            <div class="col-sm-3 buttonsGroup">
+              <button nbButton status="danger">נדחה</button>
+            </div>
+            <div class="col-sm-2 buttonsGroup">
+            </div>
+          </div>
+
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+  </div>
+</div>
+
+
+

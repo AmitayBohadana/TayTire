@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,10 +11,12 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TemplateMongo.Controllers;
+using TemplateMongo.Filters;
 using TemplateMongo.Model;
 using TemplateMongo.Services;
 
@@ -54,7 +58,6 @@ namespace TemplateMongo
 
             //remove at deploy
 
-            
             services.AddSingleton<ReportBLService>();
             services.AddSingleton<BookService>();
             services.AddSingleton<ReportService>();
@@ -66,14 +69,28 @@ namespace TemplateMongo
             services.AddSingleton<DocsService>();
             services.AddSingleton<TireService>();
             services.AddSingleton<ImageService>();
+            services.AddSingleton<LogService>();
 
             services.Configure<TireLocations>((settings) =>
             {
                 Configuration.GetSection("HebrewTireLocations").Bind(settings);
             });
+            services.AddControllers(options =>
+                options.Filters.Add(new HttpResponseExceptionFilter()));
+            //services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            //{
+            //    options.InvalidModelStateResponseFactory = context =>
+            //    {
+            //        var result = new BadRequestObjectResult(context.ModelState);
 
-            services.AddControllers();
-           // services.AddMvc();
+            //        // TODO: add `using System.Net.Mime;` to resolve MediaTypeNames
+            //        result.ContentTypes.Add(MediaTypeNames.Application.Json);
+            //        result.ContentTypes.Add(MediaTypeNames.Application.Xml);
+
+            //        return result;
+            //    };
+            //}); 
+          
         }
 
 
@@ -87,27 +104,33 @@ namespace TemplateMongo
             }
             if (!env.IsDevelopment())
             {
-                app.UseHttpsRedirection();
+                //app.UseHttpsRedirection();
+
             }
-            
+            app.UseExceptionHandler("/error");
 
             app.UseDefaultFiles(new DefaultFilesOptions
             {
                 DefaultFileNames = new
-     List<string> { "index.html" }
+            List<string> { "index.html" }
             });
-            
             app.UseStaticFiles();
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(
+            //    Path.Combine(env.ContentRootPath, "StaticFiles")),
+            //    RequestPath = "/StaticFiles"
+            //});
             app.UseDirectoryBrowser();
             //app.UseFileServer();
             app.UseRouting();
-            
-           
+
+
 
             app.UseAuthorization();
             //app.UseSession();
             //app.UseSession();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -117,7 +140,7 @@ namespace TemplateMongo
                     await context.Response.WriteAsync("Hello World!");
                 });*/
             });
-            
+
         }
 
 

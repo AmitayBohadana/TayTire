@@ -23,7 +23,11 @@ namespace TemplateMongo.Model
         public string mivchan_acharon_dt{ get; set; }
         public string tokef_dt { get; set; }
         public string baalut{ get; set; }
-        public string misgeret{ get; set; }
+        public string misgeret { get; set; }
+        public string sug_delek_nm { get; set; }   
+        public string tzeva_rechev { get; set; }
+        public string zmig_kidmi { get; set; }
+        public string zmig_ahori { get; set; }
         public string kinuy_mishari{ get; set; }
         public double rank { get; set; }
     }

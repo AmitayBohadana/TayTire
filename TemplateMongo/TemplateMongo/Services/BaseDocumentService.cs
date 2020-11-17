@@ -19,7 +19,7 @@ namespace TemplateMongo.Services
 {
     public class BaseDocumentService
     {
-
+   
         private readonly TireLocations _tireLocations;
         private readonly IWebHostEnvironment _env;
         private Document doc = null;
@@ -29,19 +29,16 @@ namespace TemplateMongo.Services
         public IConfiguration Configuration { get; }
         Font font = null;
         Font bfont = null;
-        public BaseDocumentService(IConfiguration configuration, IWebHostEnvironment env, IOptions<TireLocations> options)
+        public BaseDocumentService(IConfiguration configuration,
+            IWebHostEnvironment env, IOptions<TireLocations> options)
         {
             //ComponentInfo.SetLicense("FREE-LIMITED-KEY");
             _env = env;
             _tireLocations = options.Value;
             Configuration = configuration;
-            //var obj1 = Configuration.GetSection("LocationSettings");
-            //var config1 = Configuration.GetSection("LocationSettings").Get<Dictionary<string, string>>();
-
-            //var obj = Configuration.GetSection("HebrewTireLocations");
-            //var config = Configuration.GetSection("HebrewTireLocations").Get<Dictionary<string, string>>();
-
-            var path = Path.Combine(_env.ContentRootPath, "fonts/arialuni.ttf");
+        
+            var path = Path.Combine(_env.ContentRootPath, "wwwroot/arialuni.ttf");
+           
             bf = BaseFont.CreateFont(path, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             font = new Font(bf, 10, Font.NORMAL, BaseColor.Black);
             bfont = new Font(bf, 12, Font.NORMAL, BaseColor.Black);
@@ -125,7 +122,7 @@ namespace TemplateMongo.Services
             cell.AddElement(generateParagaph("יצרן: " + tire.manufacture, font, Element.ALIGN_LEFT));
             works.ForEach(work =>
             {
-                cell.AddElement(generateParagaph(" * " + work.repairType.type, font, Element.ALIGN_LEFT));
+                cell.AddElement(generateParagaph(" * " + GetWorkLine(work) + ", "+GetTireDetails(work), font, Element.ALIGN_LEFT));
             });
 
 
@@ -175,19 +172,49 @@ namespace TemplateMongo.Services
 
         internal void addWorkBrief(ReportVM report)
         {
-            float[] f = { 4, 1 };
+            float[] f = { 2,2, 1 };
             PdfPTable table = newTable(f, 15f);
             //PdfPTable headerTable = getHeaderTable(f, new List<string> {  "כמות", "עבודה" });
             report.workEvents.ForEach(workEvent =>
             {
-                string workLine = workEvent.repairType.type;
+
+                string workLine = GetWorkLine(workEvent);
                 table.AddCell(noBorderCell(new Phrase(" x" + workEvent.amount.ToString() + " " + workLine, font)));
                 string location = getLocation(workEvent.location);
                 table.AddCell(noBorderCell(new Phrase(" - " + location, font)));
-
+                string item = GetTireDetails(workEvent);
+                table.AddCell(noBorderCell(new Phrase(item, font)));
             });
             //doc.Add(headerTable);
             doc.Add(table);
+        }
+
+        private static string GetTireDetails(WorkEvent workEvent)
+        {
+            string res = "";
+            if (workEvent.repairType.code == 5)
+            {
+                //string damagedStr = workEvent.repairType.damaged ? "נזק" : "בלאי";
+                res = " במלאי :" + workEvent.repairType.item;
+                
+            }
+            
+            return res;
+        }
+
+        private string GetWorkLine(WorkEvent workEvent)
+        {
+            string res = "";
+            if(workEvent.repairType.code == 5)
+            {
+                string damagedStr = workEvent.repairType.damaged ? "נזק" : "בלאי";
+                res = workEvent.repairType.type + ", " + damagedStr;
+            }
+            else
+            {
+                res = workEvent.repairType.type;
+            }
+            return res;
         }
 
         private string getLocation(int location)
@@ -250,10 +277,12 @@ namespace TemplateMongo.Services
 
         internal void NewPage()
         {
+        
             doc.NewPage();
         }
         internal int[] GetDoc()
         {
+ 
             doc.Close();
             byte[] bytes = ms.ToArray();
             int[] res = Array.ConvertAll(bytes, c => (int)c);
@@ -262,15 +291,18 @@ namespace TemplateMongo.Services
 
         internal void NewDoc()
         {
+            
             this.doc = new Document(PageSize.A4);
             ms = new MemoryStream();
             writer = PdfWriter.GetInstance(doc, ms);
             doc.Open();
+            
         }
 
 
         public int[] CreatePdf()
         {
+          
             byte[] bytes = null;
             int[] res = null;
             using (MemoryStream ms = new MemoryStream())
@@ -285,12 +317,13 @@ namespace TemplateMongo.Services
                 PdfWriter writer = PdfWriter.GetInstance(document, ms);
 
                 document.Open();
-                generateTestPage(document, gisha);
+                //generateTestPage(document, gisha);
                 document.Close();
                 var page = new Paragraph("בלה בלה בלה");
 
                 bytes = ms.ToArray();
                 res = Array.ConvertAll(bytes, c => (int)c);
+             
                 return res;
 
             }
@@ -298,6 +331,7 @@ namespace TemplateMongo.Services
         }
         internal void addMainHeader(string reportId)
         {
+         
             float[] f = { 1, 1, 1 };
 
             PdfPTable table = new PdfPTable(f);
@@ -309,18 +343,20 @@ namespace TemplateMongo.Services
 
             doc.Add(table);
         }
-        private void generateTestPage(Document doc, Font gisha)
+        public void generateTestPage()
         {
-            doc.NewPage();
+        
+            
+            this.doc.NewPage();
             float[] f = { 1, 1, 1 };
 
             PdfPTable table = new PdfPTable(f);
             table.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
 
-            table.AddCell(noBorderCell(new Phrase("", gisha)));
-            table.AddCell(noBorderCell(new Phrase("אהלן לכולם", gisha)));
-            table.AddCell(noBorderCell(new Phrase("", gisha)));
-            doc.Add(table);
+            table.AddCell(noBorderCell(new Phrase("")));
+            table.AddCell(noBorderCell(new Phrase("אהלן לכולם")));
+            table.AddCell(noBorderCell(new Phrase("")));
+            this.doc.Add(table);
         }
 
         private PdfPCell noBorderCell(Phrase phrase)

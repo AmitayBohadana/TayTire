@@ -33,12 +33,12 @@ namespace TemplateMongo.Services
             }          
         }
 
-        internal ActionResult<List<ReportVM>> GetAllReportVM()
+        internal ActionResult<List<ReportVM>> GetAllActiveReportVM()
         {
             
             List<ReportVM> list = null;
             List<Report> reports = null;
-            reports = _reportService.Get();
+            reports = _reportService.GetActive();
             if (reports != null)
             {
                 list = new List<ReportVM>();
@@ -58,6 +58,12 @@ namespace TemplateMongo.Services
             return list;
         }
 
+
+        internal ReportVM GetReportVM(string id)
+        {
+            Report report = _reportService.Get(id);
+            return convertToViewModel(report);
+        }
         private ReportVM convertToViewModel(Report report)
         {
             ReportVM retVal;
@@ -76,7 +82,7 @@ namespace TemplateMongo.Services
                 //reportVm.vehicle.Id = vehicle.Id;
                 Report report = reportVm;
 
-                report.status = "ממתין";                
+                report.status = "waiting";                
                 report.vehicle_id = vehicle.Id;
                 _reports.InsertOne(report);
             }
@@ -84,12 +90,30 @@ namespace TemplateMongo.Services
             return reportVm;
         }
 
-        internal void CancelReport(ReportVM reportVm)
+        internal string CancelReport(ReportVM reportVm)
         {
-            _reportService.Remove(reportVm);
+            DeleteResult delRes = _reportService.Remove(reportVm);
+            string res = "";
+            if(delRes.DeletedCount > 0)
+            {
+                res = "נמחקו בהצלחה " + delRes.DeletedCount.ToString() + " פריטים";
+            }
+            return res;
+        }
+        internal string ReportDone(ReportVM reportVm)
+        {
+            string retVal = null;
+
+            if (reportVm.status == "confirmed")
+            {
+                reportVm.status = "done";
+                _reportService.Update(reportVm.Id, reportVm);
+                retVal = "דיווח הוגדר כבוצע בהצלחה";
+            }
+                       
+            return retVal;
         }
 
-        
 
         public ReportVM GetReportVmByPlateNum(ReportVM reportVm)
         {
@@ -102,7 +126,12 @@ namespace TemplateMongo.Services
             }
             return retVal;
         }
+        internal Vehicle GetVehicleByPlateNum(Vehicle vehicleIn)
+        {
+            Vehicle vehicle = GetVehicle(vehicleIn);
 
+            return vehicle;
+        }
         public ReportVM GetNewReportByPlateNum(ReportVM reportVm)
         {
             ReportVM retVal = new ReportVM();
@@ -191,6 +220,19 @@ namespace TemplateMongo.Services
                 vehicle = _vehicleService.GetByPlateNum(reportVm.vehicle.plateNum);
             }
             
+            return vehicle;
+        }
+        public Vehicle GetVehicle(Vehicle vehicleIn)
+        {
+            Vehicle vehicle = null;
+            if (vehicleIn != null)
+            {
+                vehicle = _vehicleService.GetByPlateNum(vehicleIn.plateNum);
+                //Here need to get vehicle from misrad tahbora
+
+                _dataService.requestMoreVehicleData(vehicleIn, _vehicleService);
+            }
+
             return vehicle;
         }
         private Vehicle updateOrCreateVehicle(ReportVM report)

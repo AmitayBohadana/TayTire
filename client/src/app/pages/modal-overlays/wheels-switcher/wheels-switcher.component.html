@@ -1,0 +1,23 @@
+
+    <nb-card>
+      <nb-card-header>העברות</nb-card-header>
+      <nb-card-body>
+
+    <br>
+    <div class="centered">
+      <h3> {{GetNumOfSwitches()}}</h3>
+      <div class="row" style="direction: ltr;">
+        <div *ngFor="let tire of tires" class="col-6 centered" [ngClass]="{'col-12':this.IsSpairTire(tire)}" >
+          <button nbButton status="primary" [ngClass]="{'wheel':!this.IsSpairTire(tire)}" (click)="wheelOnClick(tire)">{{tire.location}}</button>
+        </div>
+        <!-- <div class="col-6">
+          <button nbButton status="primary" (click)="wheelOnClick(tire)">{{tire.location}}</button>
+        </div> -->
+      </div>
+
+    </div>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton status="primary" (click)="submit()">אישור</button>
+      </nb-card-footer>
+    </nb-card>

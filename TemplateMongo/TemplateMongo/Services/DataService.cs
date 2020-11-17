@@ -88,10 +88,15 @@ namespace TemplateMongo.Services
                         JToken finalRec = recordsChild.ElementAt(0);
                         Records[] record = finalRec.ToObject<Records[]>();
 
-                        loadToVehicle(record[0], vehicleIn);
-
-
-                        vehicleService.Update(vehicleIn.Id,vehicleIn);
+                        if (record != null)
+                        {
+                            if (record.Length > 0)
+                            {
+                                loadToVehicle(record[0], vehicleIn);
+                                vehicleService.Update(vehicleIn.Id, vehicleIn);
+                            }
+                            
+                        }
                     }
                 }
             }

@@ -1,0 +1,44 @@
+<div [nbSpinner]="loading">
+  <div class="direction">
+    <div class="row">
+      <div col="4" style="font-weight: bold;">מספר רכב: </div>
+      <div col="8">{{GetCarPlateNum()}}</div>
+    </div>
+    <div class="row">
+      <div col="4" style="font-weight: bold;">סוג רכב: </div>
+      <div col="8">{{GetVhicleModelStr()}}</div>
+    </div>
+    <div class="row">
+      <div col="4" style="font-weight: bold;">מידת צמיג: </div>
+      <div col="8">{{GetTireSize()}}</div>
+    </div>
+    <div class="row" *ngFor="let tire of GetTires()">
+      <div col="4" style="font-weight: bold;"><li> {{getTireLocationStr(tire)}}:</li> </div>
+      <div col="8">{{tire.manufacture}}</div>
+    </div>
+    <div class="row">
+      <div col="4" style="font-weight: bold;">סטאטוס: </div>
+      <div col="8">{{GetReportStatus()}}</div>
+    </div>
+    <div class="row">
+      <div col="4" style="font-weight: bold;">ספק צמיגים: </div>
+      <div col="8">{{GetLisingCompany()}}</div>
+    </div>
+    <div class="row">
+      <div col="4" style="font-weight: bold;">עבודה נדרשת: </div>
+    </div>
+    <div class="row">
+      <ul>
+        <li *ngFor="let work of getWorkEvents()">{{work.repairType.type}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-12" style="text-align: center;">
+      <button (click)="this.submitReport()" type="submit" nbButton status="success">שמור ושלח</button>
+    </div>
+  </div>
+
+
+</div>
