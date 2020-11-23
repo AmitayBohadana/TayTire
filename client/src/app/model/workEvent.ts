@@ -1,3 +1,4 @@
+import { Strings } from '../strings';
 import { RepairType } from './repairType';
 
 export class WorkEvent {
@@ -14,4 +15,6 @@ public location:number;
 constructor() {
   this.amount = 0;
 }
+
+
 }

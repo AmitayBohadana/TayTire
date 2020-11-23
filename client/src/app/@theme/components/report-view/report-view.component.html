@@ -1,11 +1,19 @@
 <div class="direction">
   <div class="row">
+    <div col="4" style="font-weight: bold;">מס רכב: </div>
+    <div col="8">{{GetVehicleNum()}}</div>
+  </div>
+  <div class="row">
     <div col="4" style="font-weight: bold;"> סטאטוס: </div>
     <div col="8">{{GetStatus()}}</div>
   </div>
   <div *ngIf="IsConfirmed()" class="row">
     <div col="4" style="font-weight: bold;"> מס אישור: </div>
     <div col="8">{{GetConfirmationNum()}}</div>
+  </div>
+  <div class="row">
+    <div col="4" style="font-weight: bold;">מידת צמיג: </div>
+    <div col="8">{{GetTireSize()}}</div>
   </div>
   <div class="row">
     <div col="4" style="font-weight: bold;"> טלפון נהג: </div>

@@ -1,5 +1,9 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { ReportVM } from '../../../model/VM/reportVM';
+import { WorkEvent } from '../../../model/workEvent';
+import { ReportService } from '../../../services/report.service';
+import { Strings } from '../../../strings';
 
 @Component({
   selector: 'ngx-reports-accordion',
@@ -9,7 +13,7 @@ import { ReportVM } from '../../../model/VM/reportVM';
 export class ReportsAccordionComponent implements OnInit {
 
   @Input() reports:Array<ReportVM> = new Array<ReportVM>();
-  constructor() { }
+  constructor(private reportService:ReportService) { }
 
   ngOnInit(): void {
   }
@@ -21,21 +25,34 @@ export class ReportsAccordionComponent implements OnInit {
     return false;
   }
 
-  getReportHeader(report){
+  getReportHeader(report:ReportVM){
+    let res = "";
     if(report){
       if(report.vehicle){
-        return "רכב: "+report.vehicle.plateNum + " - "+report.user.firstName;
+        res = "רכב: "+report.vehicle.plateNum + " , "+report.user.firstName;
       }
+
     }
-    return "null";
+    return res;
   }
+  reportConfirmed(report:ReportVM){
+    if(report.status =="confirmed"){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   stopPropagation(event){
     event.stopPropagation();
   }
   SetReportDone(report){
-    // this.reportService.SetReportDone(report,this.removeCB.bind(this));
+    this.reportService.SetReportDone(report,this.ReportDoneCB.bind(this));
     return false;
   }
-
+  ReportDoneCB(data){
+    console.log(data)
+    // this.getData();
+  }
 
 }

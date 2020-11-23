@@ -2,7 +2,8 @@
   <nb-card-body>
     <form *ngIf="this.reportState == 1" [formGroup]="this.fg" [nbSpinner]="loading" nbSpinnerStatus="success"
       nbSpinnerSize="giant">
-      <h3 (click)="formDataInsert(1)">רכב ונהג</h3>
+      <!-- <h3 (click)="formDataInsert(1)">רכב ונהג</h3> -->
+      <h3>רכב ונהג</h3>
       <div class="form-group row">
         <label for="inputEmail1" class="label col-sm-3 col-form-label">מספר רכב</label>
         <div class="col-sm-9">
@@ -74,8 +75,8 @@
 <nb-card-footer>
     <div class="form-group row">
       <div class="col-sm-12" style="text-align: center;">
-        <button (click)="backOnClick()" nbButton status="primary" style="margin:5%">מסך הקודם</button>
-        <button [disabled]="!isStageComplete()" (click)="submitOnClick($event); " nbButton status="primary" style="margin:5%">מסך הבא</button>
+        <button (click)="backOnClick()" nbButton status="primary" style="margin:5%">הקודם</button>
+        <button [disabled]="!isStageComplete()" (click)="submitOnClick($event); " nbButton status="primary" style="margin:5%">המשך</button>
         <!-- <button  (click)="test()" nbButton status="primary">test</button> -->
       </div>
     </div>

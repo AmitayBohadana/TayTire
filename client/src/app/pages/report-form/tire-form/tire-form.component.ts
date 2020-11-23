@@ -184,7 +184,6 @@ export class TireFormComponent extends BaseComponent implements OnInit,AfterView
 
   }
   workEventToDisplay(workEvent: WorkEvent) {
-    console.log("work event to display");
     let retVal = workEvent.repairType.type;
     if (workEvent.repairType.code == 3) {
       let counter = this.reportInService.CountSameWorkEventsInSameTire(workEvent);
@@ -224,14 +223,31 @@ export class TireFormComponent extends BaseComponent implements OnInit,AfterView
 
       },
     });
-    this.subArray.add(sub.onClose.subscribe(repairType => repairType && this.repairTypeChoosen(repairType)));
+    this.subArray.add(sub.onClose.subscribe(tires => tires && this.tireSwitchSubmitted(tires)));
 
     // this.currentTire = tire;
     this.typesDialogOpen = true;
   }
+
+  tireSwitchSubmitted(switchData){
+    let repairType:RepairType = this.repairTypesService.GetSwitchType();
+    let newTires:Array<Tire> = switchData.tires;
+
+    // for(let i = 0 ;i<switchData.tires.length;i++){
+    //   if(newTires[i].location != this.reportInService.report.vehicle.tires[i].location){
+    //     repairType.item = newTires[i].location +"-"+this.reportInService.report.vehicle.tires[i].location;
+    //     this.reportInService.AddNewWorkEvent(repairType,0);
+    //   }
+    // }
+    for(let i = 0 ;i<switchData.numOfSwitches;i++){
+      this.reportInService.AddNewWorkEvent(repairType,0);
+    }
+
+  }
   getRepairTypes() {
     return this.repairTypesService.GetRepairTypes();
   }
+
   loadTireToView(tire: Tire) {
     this.fg.reset();
     this.fg.get('manufacture').setValue(tire.manufacture);
@@ -301,11 +317,7 @@ export class TireFormComponent extends BaseComponent implements OnInit,AfterView
     if (type.code == 5) {
       retVal = true;
     }
-    console.log(retVal + " is tire type: ", type);
-    console.log(" retval: ", retVal);
-    // if (type.code == 1) {
-    //   this.openWheelsSwitcherDialog();
-    // }
+
     return retVal;
   }
   isWheelsSwitchType(type: RepairType) {
@@ -325,6 +337,10 @@ export class TireFormComponent extends BaseComponent implements OnInit,AfterView
     let works = this.reportInService.getWorkEventsDistinct(this.tire);
     return works;
   }
+  getVehicleWorkEventsDistinct(){
+    let works = this.reportInService.getVehicleWorkEventsDistinct();
+    return works;
+  }
   removeRepairType(work: WorkEvent) {
     this.removeWorkEvent(work);
   }
@@ -332,14 +348,7 @@ export class TireFormComponent extends BaseComponent implements OnInit,AfterView
   removeWorkEvent(workEvent: WorkEvent) {
     this.reportInService.removeWorkEvent(workEvent);
   }
-  // isNewTireType(workEvent) {
-  //   if (workEvent.repairType.code == 5) {
-  //     return true;
-  //   }
-  //   else {
-  //     return false;
-  //   }
-  // }
+
 
   hasWorkEvents() {
     let works: Array<WorkEvent> = this.getWorkEvents();
@@ -348,7 +357,9 @@ export class TireFormComponent extends BaseComponent implements OnInit,AfterView
     }
     return "";
   }
-
+  hasVehicleWorkEvents() {
+    return this.reportInService.hasVehicleWorkEvents();
+  }
   public addFile(element) {
 
   }

@@ -20,7 +20,15 @@ export class RepairTypesService {
      return this.repairTypes;
    }
    repairTypeCB(data){
-
     this.repairTypes=data;
+   }
+
+   GetSwitchType(){
+    let res = null;
+    if(this.repairTypes){
+       res = this.repairTypes.find(x => x.code == 1);
+
+     }
+     return res;
    }
 }

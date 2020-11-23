@@ -57,7 +57,7 @@ public flags:Array<boolean> = new Array<boolean>();
 
   }
   submit(){
-    this.ref.close();
+    this.ref.close({tires: this.tires,numOfSwitches: this.numOfSwitches});
   }
   IsSpairTire(tire:Tire){
     let retVal = false;
@@ -79,8 +79,7 @@ public flags:Array<boolean> = new Array<boolean>();
   tire.location = this.currentTire.location;
   this.currentTire.location = temp;
   this.currentTire = null;
-  console.log("this :")
-  console.log("other :")
+
 
   }
 

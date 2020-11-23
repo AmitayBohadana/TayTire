@@ -3,18 +3,25 @@
       <nb-accordion >
         <nb-accordion-item #item *ngFor="let report of reports">
           <nb-accordion-item-header [ngClass]="{'confirmedItem':isConfirmed(report)}">
-            <div class="col-9">
-              <label style="text-align: center;">{{getReportHeader(report)}}</label>
+            <div class="row">
+              <div class="col-7">
+                <label style="text-align: center;">{{getReportHeader(report)}}</label>
+              </div>
+
+              <div class="col-5">
+
+                <button [disabled]="!isConfirmed(report)" nbButton status="success" (click)="SetReportDone(report)" (click)="stopPropagation($event)">
+                  בוצע
+                  <nb-icon icon="trash"></nb-icon>
+                </button>
             </div>
+            <div class="row" *ngIf=reportConfirmed(report)>
+              <ul>
+                <li *ngFor="let work of this.report.workEvents">{{work.repairType.type}}
 
-            <div class="col-3">
-
-              <!-- <button [disabled]="!isConfirmed(report)" nbButton status="success" (click)="SetReportDone(report)" (click)="stopPropagation($event)">
-                בוצע
-                <nb-icon icon="trash"></nb-icon>
-              </button> -->
-
-
+                </li>
+              </ul>
+            </div>
             </div>
           </nb-accordion-item-header>
           <nb-accordion-item-body>

@@ -164,7 +164,6 @@ export class ReportPageComponent implements OnInit {
   }
 
   removeCB(data){
-    console.log("data: ",data);
     this.getData();
   }
 

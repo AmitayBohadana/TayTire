@@ -10,7 +10,12 @@ import { RepairType } from '../model/repairType';
   providedIn: 'root'
 })
 export class ReportInputService {
+
+
   public report:ReportVM=new ReportVM();
+  public vehicleWorkEvents = new Array<WorkEvent>();
+
+
   public mapWorkEvents:Map<string,number> = new Map<string,number>();
   public isStage2Complete = false;
   constructor(private restService:RestService) { }
@@ -49,30 +54,48 @@ export class ReportInputService {
     tire.manufacture = tireIn.manufacture;
     let report = this.report;
   }
-  AddNewWorkEvent(type: RepairType,location) {
-    let works = this.GetWorkEventsByTireLocation(location);
-
-    let work = this.createWorkEvent(type,location);
-    this.report.workEvents.push(work);
-    this.pushWorkEventToMap(work);
-
+  AddNewWorkEvent(type: RepairType,location,amount = null) {
+    let work = this.createWorkEvent(type,location,amount);
+    this.pushWorkEvent(work);
 
   }
   GetExistWorks(type: RepairType,location){
     let res:WorkEvent = null;
     let workEvents = this.GetWorkEventsByTireLocation(location);
   }
-  createWorkEvent(type: RepairType,location) {
+  createWorkEvent(type: RepairType,location,amount?) {
     let work = new WorkEvent();
     work.location = location;
     work.repairType = type;
-    work.amount++;
-
+    if(amount){
+      work.amount = amount;
+    }else{
+      work.amount++;
+    }
     return work;
   }
-  pushWorkEvent(work: WorkEvent) {
+  hasVehicleWorkEvents() {
+    let res = false;
+    if(this.vehicleWorkEvents){
+      if(this.vehicleWorkEvents.length > 0){
+        res = true;
+      }
+    }
+    return res;
+  }
+  private pushWorkEvent(work: WorkEvent) {
     this.report.workEvents.push(work);
     this.pushWorkEventToMap(work);
+    if(this.isVehicleWorkEvent(work)){
+      this.vehicleWorkEvents.push(work);
+    }
+  }
+  isVehicleWorkEvent(work: WorkEvent) {
+    let res = false;
+    if(work.repairType.code == 1){
+      res = true;
+    }
+    return res;
   }
   pushWorkEventToMap(work: WorkEvent) {
     if(!this.mapContainsWorkEvent(work)){
@@ -148,8 +171,14 @@ export class ReportInputService {
     if (index !== -1) {
       this.report.workEvents.splice(index, 1);
     }
+    const index2: number = this.vehicleWorkEvents.indexOf(work);
+    if (index2 !== -1) {
+      this.vehicleWorkEvents.splice(index2, 1);
+    }
   }
-
+  getVehicleWorkEventsDistinct() {
+    return this.vehicleWorkEvents;
+  }
   getWorkEventsDistinct(tire:Tire){
     let retVal:Array<WorkEvent> = new Array<WorkEvent>();
     let allWorkEvents =  this.getWorkEventsByTire(tire);

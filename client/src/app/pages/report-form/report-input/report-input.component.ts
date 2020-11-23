@@ -217,7 +217,7 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     }
 
     if (this.reportState == 2) {
-      res = this.reportInService.isStage2Complete;
+      // res = this.reportInService.isStage2Complete;
     }
     if (this.reportState == 3) {
       res = false;
@@ -291,18 +291,8 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     console.log("picId: ", picId);
   }
 
-  newWorkEvent(type: RepairType) {
-    let work = new WorkEvent();
-    work.location = this.currentTire.location;
 
-    work.repairType = type;
-    work.amount++;
-    if (type.code == 5) {
-      type.item = "Michlin";
-    }
-    // this.reportInService.report.workEvents.push(work);
-    this.reportInService.pushWorkEvent(work);
-  }
+
 
 
 

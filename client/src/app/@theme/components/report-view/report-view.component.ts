@@ -37,7 +37,13 @@ export class ReportViewComponent implements OnInit {
     return res;
   }
   GetWorkEventToString(work:WorkEvent){
-    return work.repairType.type +" - "+ Strings.tireLocations[work.location - 1];
+    let res = "";
+    if(work.location!= 0){
+      res = work.repairType.type +" - "+ Strings.tireLocations[work.location - 1];
+    }else{
+      res =  work.repairType.type;
+    }
+    return res;
   }
   GetConfirmationNum(){
     let res = this.report.confirmationNum;
@@ -45,6 +51,12 @@ export class ReportViewComponent implements OnInit {
       res = "אין";
     }
     return res;
+  }
+  GetVehicleNum(){
+    return this.report.vehicle.plateNum;
+  }
+  GetTireSize(){
+    return this.report.vehicle.tireSize;
   }
 
 }
