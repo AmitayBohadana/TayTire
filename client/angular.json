@@ -28,7 +28,7 @@
                 "input": "node_modules/leaflet/dist/images",
                 "output": "/assets/img/markers"
               },
-              "src/manifest.webmanifest"
+              "src/manifest.json"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
@@ -137,7 +137,7 @@
                 "input": "node_modules/leaflet/dist/images",
                 "output": "/assets/img/markers"
               },
-              "src/manifest.webmanifest"
+              "src/manifest.json"
             ]
           }
         },

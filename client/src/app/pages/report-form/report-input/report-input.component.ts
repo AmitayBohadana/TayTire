@@ -17,6 +17,7 @@ import { BaseComponent } from '../../base/base.component';
 import { ReportInputService } from '../../../services/report-input.service';
 import { Router } from '@angular/router';
 import { TiresStepperComponent } from '../tires-stepper/tires-stepper.component';
+import { StringsService } from '../../../services/strings.service';
 
 @Component({
   selector: 'ngx-report-input',
@@ -33,19 +34,23 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
   public loading = false;
   public fg: FormGroup;
   public subArray: Subscription = new Subscription();
+  public showTireSize = false;
+  public showSpeedCodes = false;
   cuurentTireIdx
 
   myTireBrandsOptions = <any>[];
   filteredControlOptions$: Observable<string[]>;
 
   constructor(private router: Router, private reportInService: ReportInputService, private dialogService: NbDialogService,
-    private repairTypesService: RepairTypesService, private tireService: TireService, private toastrService: NbToastrService, private renderer: Renderer2) {
+    private repairTypesService: RepairTypesService, public stringsService: StringsService, private tireService: TireService, private toastrService: NbToastrService, private renderer: Renderer2) {
     super();
 
 
 
   }
   ngOnInit() {
+    console.log("onInit!!")
+    this.reportInService.resetReport();
     this.repairTypesService.requestData();
     this.createFormGroups();
   }
@@ -56,6 +61,12 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     }
   }
   open() {
+  }
+  GetVhicleModelStr() {
+    return this.stringsService.GetVhicleModelStr();
+  }
+  hasVhicleModelStr() {
+    return this.GetVhicleModelStr() != "";
   }
   createFormGroups() {
     this.fg = new FormGroup({
@@ -74,8 +85,14 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
   }
 
   getTireSizeFromInput() {
-    return this.fg.get('tireWidth').value + "/" + this.fg.get('tireHeight').value + "R" + this.fg.get('tireDelimiter').value + " " + this.fg.get('omesCode').value + this.fg.get('speedCode').value;
+    let retVal = "";
+    if (this.fg.get('tireWidth').value) {
+      retVal = this.fg.get('tireWidth').value + "/" + this.fg.get('tireHeight').value + "R" + this.fg.get('tireDelimiter').value + " " + this.fg.get('omesCode').value + this.fg.get('speedCode').value;
+    }
+
+    return retVal;
   }
+
   getRepairTypes() {
     return this.repairTypesService.GetRepairTypes();
   }
@@ -114,34 +131,34 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     this.loading = true;
     this.reportInService.GetVehicleByPlateNum(this.getVhicleByPlateNumCB.bind(this));
   }
-  vehicleGovCB(data){
-          console.log("data: ",data);
-          this.loading = false;
-          let records = data.result.records;
-          if(records.length == 1){
-            let vehicle = new Vehicle();
-            let record = records[0];
+  vehicleGovCB(data) {
+    console.log("data: ", data);
+    this.loading = false;
+    let records = data.result.records;
+    if (records.length == 1) {
+      let vehicle = new Vehicle();
+      let record = records[0];
 
-            let tireSize = record.zmig_kidmi;
-            let manufacture = record.tozeret_nm;
-            let model = record.kinuy_mishari;
-            this.reportInService.report.vehicle.tireSize = tireSize.trim();
-            this.reportInService.report.vehicle.manufacture = manufacture;
-            this.reportInService.report.vehicle.model = model;
-            this.loadReportToView();
-            this.setCurrentTireByLocation(1);
-            this.toastrService.info("הרכב נמצא במאגר הארצי");
-          }
+      let tireSize = record.zmig_kidmi;
+      let manufacture = record.tozeret_nm;
+      let model = record.kinuy_mishari;
+      this.reportInService.report.vehicle.tireSize = tireSize.trim();
+      this.reportInService.report.vehicle.manufacture = manufacture;
+      this.reportInService.report.vehicle.model = model;
+      this.loadReportToView();
+      this.setCurrentTireByLocation(1);
+      this.toastrService.info("הרכב נמצא במאגר הארצי");
+    }
 
   }
-  vehicleGovFailed(data){
+  vehicleGovFailed(data) {
 
   }
   GetVehicleFromGov() {
     let plateNum = this.fg.get('carNum').value;
-    if(plateNum != null){
-      if(plateNum != ""){
-        this.reportInService.GetVehicleFromGov(plateNum,this.vehicleGovCB.bind(this),this.vehicleGovFailed.bind(this) );
+    if (plateNum != null) {
+      if (plateNum != "") {
+        this.reportInService.GetVehicleFromGov(plateNum, this.vehicleGovCB.bind(this), this.vehicleGovFailed.bind(this));
       }
     }
   }
@@ -151,7 +168,7 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     }
     // this.reportState = 1; //change it
   }
-  vehicleArrived(vehicle){
+  vehicleArrived(vehicle) {
     // let reportVm: ReportVM = new ReportVM();
     // reportVm.vehicle = vehicle;
     // this.reportInService.report = reportVm;
@@ -167,7 +184,7 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
       this.vehicleArrived(vehicle);
 
       this.toastrService.info("רכב זוהה במאגר");
-    }else{
+    } else {
       this.GetVehicleFromGov();
     }
     // this.reportInService.report = reportVm;
@@ -336,8 +353,6 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
       this.fg.get('km').setValue(vehicle.km);
       // this.fg.get('tireSize').setValue(vehicle.tireSize);
       this.setTireSizeToView(vehicle.tireSize);
-      this.fg.get('speedCode').setValue("V");
-      this.fg.get('omesCode').setValue(92);
       this.fg.get('fullName').setValue("someone");
       this.fg.get('phoneNum').setValue("051511111");
 
@@ -350,31 +365,47 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
       setTimeout(() => element.focus(), 0);
     }
   }
+
   setTireSizeToView(tireSize: string) {
     if (tireSize) {
 
       let tireSizeArr = tireSize.split(/[/R ]+/);
-      let soffixArr;
-
+      if (tireSizeArr.length > 2) {
+        let tireWidth = tireSizeArr[0];
+        let tireHeight = tireSizeArr[1];
+        let tireDelimiter = tireSizeArr[2];
+        if (!tireWidth || !tireHeight || !tireDelimiter) {
+          this.showTireSize = true;
+        }
       this.fg.get('tireWidth').setValue(tireSizeArr[0]);
       this.fg.get('tireHeight').setValue(tireSizeArr[1]);
       this.fg.get('tireDelimiter').setValue(tireSizeArr[2]);
-      if (tireSizeArr.length > 2) {
+      }else{
+        this.showTireSize = true;
+      }
+      if (tireSizeArr.length > 3) {
         let str = tireSizeArr[3];
         if (str != null) {
           let omes = str.substring(0, str.length - 1);
           let speedCode = str.substring(str.length - 1);
-          this.fg.get('omesCode').setValue(omes);
-          if (speedCode != "") {
-            speedCode = speedCode.toUpperCase();
-            this.fg.get('speedCode').setValue(speedCode);
+          if (!omes || !speedCode) {
+            this.showSpeedCodes = true;
+
+            if (speedCode != "") {
+
+            }
           }
+          this.fg.get('omesCode').setValue(omes);
+          speedCode = speedCode.toUpperCase();
+          this.fg.get('speedCode').setValue(speedCode);
+        } else {
+          this.showSpeedCodes = true;
         }
-
-
-
-
+      } else {
+        this.showSpeedCodes = true;
       }
+
+
     }
 
   }
@@ -383,7 +414,7 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     // vehicle.Id="4444";
     vehicle.plateNum = "1111111";
     vehicle.km = 15000;
-    vehicle.tireSize = "175/65R14";
+    vehicle.tireSize = "175/65R14 92V";
 
     vehicle.tires = new Array<Tire>();
     vehicle.tires.push(this.tireService.generateTire());

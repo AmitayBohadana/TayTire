@@ -19,7 +19,7 @@ import { NbSidebarService } from '@nebular/theme';
       </nb-layout-column>
 
       <nb-layout-footer fixed>
-        <!-- <ngx-footer></ngx-footer> -->
+        ContactUs
       </nb-layout-footer>
     </nb-layout>
   `,

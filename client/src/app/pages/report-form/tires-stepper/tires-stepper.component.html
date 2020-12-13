@@ -15,7 +15,10 @@
       <span (click)="setTireLocation(1)" class="dot" [ngClass]="{'selectedTire': this.getSelectedLocation() == 1}"></span>
     </div>
   </div>
-  <h3>{{tireHeadLine(GetCurrentTire())}}</h3>
+  <div style="text-align: center;">
+    <h3>{{tireHeadLine(GetCurrentTire())}}</h3>
+  </div>
+
     <ngx-tire-form [tire]=GetCurrentTire()></ngx-tire-form>
 
     <div class="row" >

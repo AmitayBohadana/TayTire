@@ -34,7 +34,9 @@ export class ReportInputService {
     }
     return res;
   }
-
+  resetReport(){
+    this.report=new ReportVM();
+  }
   CountSameWorkEventsInSameTire(workIn: WorkEvent) {
     let counter = 0;
     this.report.workEvents.forEach(work=>{

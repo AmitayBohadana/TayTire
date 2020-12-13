@@ -1,68 +1,81 @@
-<nb-card class="col-md-12 col-lg-12 col-xxxl-12 direction" style="margin-bottom: 20%;">
-  <nb-card-body>
+<!-- <nb-card class="col-md-12 col-lg-12 col-xxxl-12 direction" style="margin-bottom: 20%;">
+  <nb-card-body> -->
     <form *ngIf="this.reportState == 1" [formGroup]="this.fg" [nbSpinner]="loading" nbSpinnerStatus="success"
       nbSpinnerSize="giant">
-      <!-- <h3 (click)="formDataInsert(1)">רכב ונהג</h3> -->
-      <h3>רכב ונהג</h3>
-      <div class="form-group row">
-        <label for="inputEmail1" class="label col-sm-3 col-form-label">מספר רכב</label>
-        <div class="col-sm-9">
-          <input type="text" pattern="\d*" nbInput fullWidth (keyup)="keytab($event, 8,'km')" shape="semi-round" [status]="getStatus(1,'carNum')"
-            placeholder="00-000-00" formControlName="carNum" (focusout)="focusOutFunction('carNum')">
-        </div>
+      <div style="text-align: center;">
+        <!-- <h3 (click)="formDataInsert(1)">דיווח חדש</h3> -->
+        <h3>דיווח חדש</h3>
       </div>
+
       <div class="form-group row">
-        <label for="inputPassword2" class="label col-sm-3 col-form-label">קילומטר</label>
+        <label class="label col-sm-3 col-form-label myLabel">מספר רכב</label>
+
         <div class="col-sm-9">
-          <input type="number" pattern="\d*" nbInput fullWidth shape="semi-round" status="info" placeholder="15,000km"
-            formControlName="km" id="km" [status]="getStatus(1,'km')">
+          <input  type="text" pattern="\d*" nbInput fullWidth (keyup)="keytab($event, 8,'km')" shape="semi-round" [status]="getStatus(1,'carNum')"
+            placeholder="00-000-00" formControlName="carNum" fieldSize="giant" (focusout)="focusOutFunction('carNum')">
         </div>
+        <label class="label col-sm-3 col-form-label myOutPutLabel"> {{GetVhicleModelStr()}}</label>
       </div>
+
       <div class="form-group row">
-        <label for="inputPassword2" class="label col-sm-3 col-form-label">מידת צמיג: {{getTireSizeFromInput()}}</label>
-        <div class="col-sm-9" style="direction: ltr;">
+        <!-- <label *ngIf="hasVhicleModelStr()" class="label col-sm-3 col-form-label myLabel">סוג רכב: </label>
+        <label class="label col-sm-3 col-form-label myOutPutLabel"> {{GetVhicleModelStr()}}</label> -->
+        <label class="label col-sm-3 col-form-label myLabel">מידת צמיג: </label>
+        <label class="label col-sm-3 col-form-label myOutPutLabel"> {{getTireSizeFromInput()}}</label>
+        <!-- <label class="label col-sm-3 col-form-label myOutPutLabel"> {{this.stringsService.GetlVehicleFullTireSize()}}</label> -->
+
+
+        <div *ngIf="showTireSize" class="col-sm-9" style="direction: ltr;">
           <input class="tireSizeInput" type="number" pattern="\d*" (keyup)="keytab($event, 3,'tireHeight')" nbInput shape="semi-round" status="info"
-            placeholder="195" min="1" max="999" formControlName="tireWidth" [status]="getStatus(1,'tireWidth')">
+            placeholder="195" min="1" max="999" formControlName="tireWidth" [status]="getStatus(1,'tireWidth')" fieldSize="giant">
           /
           <input class="tireSizeInput" type="number" pattern="\d*" nbInput (keyup)="keytab($event, 2,'tireDelimiter')" shape="semi-round" status="info"
-            placeholder="65" min="1" max="99" formControlName="tireHeight" id="tireHeight" [status]="getStatus(1,'tireHeight')">
+            placeholder="65" min="1" max="99" formControlName="tireHeight" id="tireHeight" [status]="getStatus(1,'tireHeight')" fieldSize="giant">
           R
           <input class="tireSizeInput" type="number" pattern="\d*" nbInput (keyup)="keytab($event, 2,'omesCode')" shape="semi-round" status="info"
-            placeholder="15" min="1" max="99" formControlName="tireDelimiter" id="tireDelimiter" [status]="getStatus(1,'tireDelimiter')">
+            placeholder="15" min="1" max="99" formControlName="tireDelimiter" id="tireDelimiter" [status]="getStatus(1,'tireDelimiter')" fieldSize="giant">
         </div>
       </div>
-      <div class="form-group row">
-        <label for="inputPassword2" class="label col-sm-3 col-form-label"></label>
+      <div *ngIf="showSpeedCodes" class="form-group row">
+        <label class="label col-sm-3 col-form-label myLabel">קוד מהירות:</label>
         <div class="col-sm-9" style="direction: ltr;">
           <!-- <div style="width: 20%;" ></div> -->
           <input style="width: 20%; margin-right: 5%;" type="number" pattern="\d*" nbInput shape="semi-round" status="info"
-            placeholder="92" min="1" max="99" formControlName="omesCode" id="omesCode" [status]="getStatus(1,'omesCode')">
+            placeholder="92" min="1" max="99" formControlName="omesCode" id="omesCode" [status]="getStatus(1,'omesCode')" fieldSize="giant">
 
           <input style="width: 20%;" type="text" nbInput shape="semi-round" status="info" placeholder="V"
-            formControlName="speedCode" maxlength="1" [status]="getStatus(1,'speedCode')">
+            formControlName="speedCode" maxlength="1" [status]="getStatus(1,'speedCode')" fieldSize="giant">
 
         </div>
       </div>
 
+      <div class="form-group row">
+        <label class="label col-sm-3 col-form-label myLabel">קילומטר</label>
+        <div class="col-sm-9">
+          <input type="number" pattern="\d*" nbInput fullWidth shape="semi-round" status="info" placeholder="15,000km"
+            formControlName="km" id="km" [status]="getStatus(1,'km')" fieldSize="giant">
+        </div>
+      </div>
+
       <div class="form-group row direction">
-        <label for="inputEmail1" class="label col-sm-3 col-form-label">שם חברה</label>
+        <label class="label col-sm-3 col-form-label myLabel">שם חברה</label>
         <div class="col-sm-9">
           <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="רכבי ליסינג בעמ"
-            formControlName="lisingcompany">
+            formControlName="lisingcompany" fieldSize="giant">
         </div>
       </div>
       <div class="form-group row direction">
-        <label for="inputEmail1" class="label col-sm-3 col-form-label">שם נהג</label>
+        <label class="label col-sm-3 col-form-label myLabel">שם נהג</label>
         <div class="col-sm-9">
           <input type="text" nbInput fullWidth shape="semi-round" status="info" placeholder="שם מלא"
-            formControlName="fullName">
+            formControlName="fullName" fieldSize="giant">
         </div>
       </div>
       <div class="form-group row direction">
-        <label for="inputPassword2" class="label col-sm-3 col-form-label">טלפון נהג</label>
+        <label class="label col-sm-3 col-form-label myLabel">טלפון נהג</label>
         <div class="col-sm-9">
           <input type="number" pattern="\d*" nbInput fullWidth shape="semi-round" status="info" placeholder="מס' טלפון"
-            formControlName="phoneNum">
+            formControlName="phoneNum" fieldSize="giant">
         </div>
       </div>
     </form>
@@ -71,17 +84,17 @@
 
     <ngx-report-display *ngIf="this.reportState == 3" [report]=GetReport()></ngx-report-display>
 
-  </nb-card-body>
-<nb-card-footer>
-    <div class="form-group row">
+  <!-- </nb-card-body> -->
+<!-- <nb-card-footer> -->
+    <div class="form-group row mb-5" >
       <div class="col-sm-12" style="text-align: center;">
-        <button (click)="backOnClick()" nbButton status="primary" style="margin:5%">הקודם</button>
-        <button [disabled]="!isStageComplete()" (click)="submitOnClick($event); " nbButton status="primary" style="margin:5%">המשך</button>
+        <button (click)="backOnClick()" nbButton status="primary" size="large" style="margin:5%">הקודם</button>
+        <button [disabled]="!isStageComplete()" (click)="submitOnClick($event); " size="large" nbButton status="primary" style="margin:5%">המשך</button>
         <!-- <button  (click)="test()" nbButton status="primary">test</button> -->
       </div>
     </div>
 
-  </nb-card-footer>
-</nb-card>
+  <!-- </nb-card-footer>
+</nb-card> -->
 
 

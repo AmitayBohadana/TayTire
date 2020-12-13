@@ -1,3 +1,13 @@
 .FileInput {
   display: none;
 }
+.myLabel{
+  font-size: 1.25rem;
+}
+input:empty {
+  font-size: 1.125em !important;
+}
+.myOutPutLabel{
+  font-size: 1.25rem;
+  color:black;
+}
