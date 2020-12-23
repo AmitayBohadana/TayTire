@@ -89,7 +89,6 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
     if (this.fg.get('tireWidth').value) {
       retVal = this.fg.get('tireWidth').value + "/" + this.fg.get('tireHeight').value + "R" + this.fg.get('tireDelimiter').value + " " + this.fg.get('omesCode').value + this.fg.get('speedCode').value;
     }
-
     return retVal;
   }
 
@@ -149,7 +148,6 @@ export class ReportInputComponent extends BaseComponent implements OnInit, OnDes
       this.setCurrentTireByLocation(1);
       this.toastrService.info("הרכב נמצא במאגר הארצי");
     }
-
   }
   vehicleGovFailed(data) {
 

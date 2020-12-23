@@ -14,10 +14,12 @@ const routes: Routes = [{
       loadChildren: () => import('./report-form/report-form.module')
         .then(m => m.ReportFormModule),
     },
+    {path:'report-m',
+    loadChildren:()=>import('./report-input/report-input.module')
+    .then(m=>m.ReportInputModule)}
+    ,
     {
-      path: 'all-reports',
-      loadChildren: () => import('./all-reports/all-reports.module')
-        .then(m => m.AllReportsModule),
+      path: 'all-reports',loadChildren: () => import('./all-reports/all-reports.module').then(m => m.AllReportsModule),
     },
     {
       path: 'ngx-report-input',
@@ -28,7 +30,7 @@ const routes: Routes = [{
       path: '',
       redirectTo: 'report-form',
       pathMatch: 'full',
-    },
+    }
     // {
     //    path: '**',
     //    component: NotFoundComponent,

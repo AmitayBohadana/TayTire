@@ -1,0 +1,24 @@
+<div style="text-align: center;">
+  <h3>בחר תקלה</h3>
+</div>
+<nb-card class="col-md-12 col-lg-12 col-xxxl-12 direction">
+  <div *ngFor="let r of this.repairTypes" class="col-md-3 col-lg-3 col-xxxl-3">
+    <button nbButton status="primary" (click)="repairClicked(r)" >{{r.type}}</button>
+  </div>
+</nb-card>
+
+<form [formGroup]="this.fg">
+  <div class="form-group row direction">
+    <div class="col-sm-9" style="direction: ltr;">
+      <input style="max-width: 50%;" nbInput type="text" placeholder="יצרן" fieldSize="giant">
+      <input style="max-width: 50%;" nbInput type="text" placeholder="יצרן" fieldSize="giant">
+      <input style="max-width: 50%;" nbInput type="text" placeholder="יצרן" fieldSize="giant">
+      <input style="max-width: 50%;" nbInput type="text" placeholder="יצרן" fieldSize="giant">
+      <input style="max-width: 50%;" nbInput type="text" placeholder="יצרן" fieldSize="giant">
+    </div>
+  </div>
+</form>
+
+<!-- <div class="row" *ngFor="let r of this.repairTypes">
+  <button nbButton status="primary">{{r.type}}</button>
+</div> -->

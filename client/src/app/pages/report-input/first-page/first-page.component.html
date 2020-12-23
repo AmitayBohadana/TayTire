@@ -1,4 +1,4 @@
-    <form *ngIf="this.reportState == 1" [formGroup]="this.fg" [nbSpinner]="loading" nbSpinnerStatus="success"
+<form [formGroup]="this.fg" [nbSpinner]="loading" nbSpinnerStatus="success"
       nbSpinnerSize="giant">
       <div style="text-align: center;">
         <h3>דיווח חדש</h3>
@@ -8,7 +8,7 @@
         <label class="label col-sm-3 col-form-label myLabel">מספר רכב</label>
 
         <div class="col-sm-9">
-          <input  type="text" pattern="\d*" nbInput fullWidth (keyup)="keytab($event, 8,'km')" shape="semi-round" [status]="getStatus(1,'carNum')"
+          <input  type="text" pattern="\d*" nbInput fullWidth (keyup)="keytab($event, 8,'km')" shape="semi-round" [status]="getStatus('carNum')"
             placeholder="00-000-00" formControlName="carNum" fieldSize="giant" (focusout)="focusOutFunction('carNum')">
         </div>
         <label class="label col-sm-3 col-form-label myOutPutLabel"> {{GetVhicleModelStr()}}</label>
@@ -17,25 +17,26 @@
       <div class="form-group row">
         <label class="label col-sm-3 col-form-label myLabel">מידת צמיג: </label>
         <label class="label col-sm-3 col-form-label myOutPutLabel"> {{getTireSizeFromInput()}}</label>
+        <button *ngIf="!showTireSize || !showSpeedCodes" (click)="showTireSizeForms()">עריכה</button>
         <div *ngIf="showTireSize" class="col-sm-9" style="direction: ltr;">
           <input class="tireSizeInput" type="number" pattern="\d*" (keyup)="keytab($event, 3,'tireHeight')" nbInput shape="semi-round" status="info"
-            placeholder="195" min="1" max="999" formControlName="tireWidth" [status]="getStatus(1,'tireWidth')" fieldSize="giant">
+            placeholder="195" min="1" max="999" formControlName="tireWidth" [status]="getStatus('tireWidth')" fieldSize="giant">
           /
           <input class="tireSizeInput" type="number" pattern="\d*" nbInput (keyup)="keytab($event, 2,'tireDelimiter')" shape="semi-round" status="info"
-            placeholder="65" min="1" max="99" formControlName="tireHeight" id="tireHeight" [status]="getStatus(1,'tireHeight')" fieldSize="giant">
+            placeholder="65" min="1" max="99" formControlName="tireHeight" id="tireHeight" [status]="getStatus('tireHeight')" fieldSize="giant">
           R
           <input class="tireSizeInput" type="number" pattern="\d*" nbInput (keyup)="keytab($event, 2,'omesCode')" shape="semi-round" status="info"
-            placeholder="15" min="1" max="99" formControlName="tireDelimiter" id="tireDelimiter" [status]="getStatus(1,'tireDelimiter')" fieldSize="giant">
+            placeholder="15" min="1" max="99" formControlName="tireDelimiter" id="tireDelimiter" [status]="getStatus('tireDelimiter')" fieldSize="giant">
         </div>
       </div>
       <div *ngIf="showSpeedCodes" class="form-group row">
         <label class="label col-sm-3 col-form-label myLabel">קוד מהירות:</label>
         <div class="col-sm-9" style="direction: ltr;">
           <input style="width: 20%; margin-right: 5%;" type="number" pattern="\d*" nbInput shape="semi-round" status="info"
-            placeholder="92" min="1" max="99" formControlName="omesCode" id="omesCode" [status]="getStatus(1,'omesCode')" fieldSize="giant">
+            placeholder="92" min="1" max="99" formControlName="omesCode" id="omesCode" [status]="getStatus('omesCode')" fieldSize="giant">
 
           <input style="width: 20%;" type="text" nbInput shape="semi-round" status="info" placeholder="V"
-            formControlName="speedCode" maxlength="1" [status]="getStatus(1,'speedCode')" fieldSize="giant">
+            formControlName="speedCode" maxlength="1" [status]="getStatus('speedCode')" fieldSize="giant">
 
         </div>
       </div>
@@ -44,7 +45,7 @@
         <label class="label col-sm-3 col-form-label myLabel">קילומטר</label>
         <div class="col-sm-9">
           <input type="number" pattern="\d*" nbInput fullWidth shape="semi-round" status="info" placeholder="15,000km"
-            formControlName="km" id="km" [status]="getStatus(1,'km')" fieldSize="giant">
+            formControlName="km" id="km" [status]="getStatus('km')" fieldSize="giant">
         </div>
       </div>
 
@@ -70,17 +71,8 @@
         </div>
       </div>
     </form>
-
-    <ngx-tires-stepper *ngIf="this.reportState == 2"></ngx-tires-stepper>
-
-    <ngx-report-display *ngIf="this.reportState == 3" [report]=GetReport()></ngx-report-display>
-
-    <div class="form-group row mb-5" >
+    <div class="row mb-5" >
       <div class="col-sm-12" style="text-align: center;">
-        <button (click)="backOnClick()" nbButton status="primary" size="large" style="margin:5%">הקודם</button>
         <button [disabled]="!isStageComplete()" (click)="submitOnClick($event); " size="large" nbButton status="primary" style="margin:5%">המשך</button>
       </div>
     </div>
-
-
-
