@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RepairType } from '../../../model/repairType';
 import { RepairTypesService } from '../../../services/repair-types.service';
@@ -10,7 +11,9 @@ import { ReportInputService } from '../../../services/report-input.service';
   styleUrls: ['./second-page.component.scss']
 })
 export class SecondPageComponent implements OnInit {
-  public fg;
+  public fg = new FormGroup({
+    manufacture: new FormControl('', []),
+  });;
   public repairTypes:Array<RepairType>=[];
   constructor(private router: Router, private repairTypeService:RepairTypesService,
      private activeRoute: ActivatedRoute, private reportInService: ReportInputService) {

@@ -46,6 +46,10 @@ export class FirstPageComponent implements OnInit {
 
     }
   }
+  setTestData(){
+    this.fg.get('carNum').setValue('7999672');
+    this.fg.get('km').setValue(15000);
+  }
   setReportToView(report: ReportVM) {
     if (report.vehicle) {
       if (report.vehicle.plateNum.length > 0) {
